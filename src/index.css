@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
+
+.heading{
+@apply text-gray-400 tracking-widest text-lg uppercase text-center my-2
+}
+
 @tailwind utilities;

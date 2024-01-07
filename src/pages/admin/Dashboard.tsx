@@ -3,7 +3,7 @@ import { BiMaleFemale } from "react-icons/bi";
 import userImg from "../../assets/userpic.png";
 import { HiTrendingUp, HiTrendingDown } from "react-icons/hi";
 import { BarChart, DoughnutChart } from "../../components/admin/Common/Charts";
-import DashboardTable from "../../components/DashboardPage/DashboardTable";
+import DashboardTable from "../../components/admin/DashboardPage/DashboardTable";
 import  data from "../../assets/data.json";
 
 function Dashboard() {
@@ -53,7 +53,7 @@ function Dashboard() {
       <section className="grid grid-cols-4 ">
         <div className="bg-white col-span-3 rounded shadow px-8 py-7 m-3">
           <div className="flex justify-center  items-center flex-col">
-            <h5 className="text-gray-400 tracking-widest text-lg capitalize">
+            <h5 className="heading">
               REVENUE & TRANSACTION
             </h5>
             <BarChart
@@ -68,7 +68,7 @@ function Dashboard() {
         </div>
 
         <div className="bg-white rounded shadow px-3 py-5 m-3">
-          <h5 className="text-gray-400 tracking-widest text-md capitalize text-center">
+          <h5 className="text-gray-400 tracking-widest text-md uppercase text-center">
             INVENTORY
           </h5>
           <div className="flex justify-around items-center my-4">
@@ -83,7 +83,7 @@ function Dashboard() {
 
       <div className="grid grid-cols-4">
         <div className="bg-white rounded shadow relative px-3 py-5 m-3">
-        <h5 className="text-gray-400 tracking-widest text-lg capitalize text-center my-1">
+        <h5 className="heading">
               GENDER RATIO
             </h5>
           <DoughnutChart
@@ -111,7 +111,7 @@ interface Stats {
 
 const WebsiteStats = ({ type, value, percentage, color }: Stats) => {
   return (
-    <div className="flex items-center justify-between bg-white rounded shadow px-3 py-5 m-3">
+    <div className="flex items-center justify-between bg-white rounded shadow px-3 py-5 m-3 overflow-x-auto">
       <div className="p-2">
         <h5 className=" text-gray-400">{type}</h5>
         <div className="text-2xl font-bold my-1">{value}</div>

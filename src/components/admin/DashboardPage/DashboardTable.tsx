@@ -1,5 +1,5 @@
 import { Column } from "react-table";
-import Table from "../admin/Common/Table";
+import Table from "../Common/Table";
 
 interface ColumnsType {
   id: string;
@@ -18,7 +18,7 @@ const columns: Column<ColumnsType>[] = [
 ];
 
 function DashboardTable({ data }: { data: ColumnsType[] }) {
-  return Table<ColumnsType>(columns, data, "w-full", "Top Transaction")();
+  return Table<ColumnsType>(columns, data, "px-3 py-5 m-3", "Top Transaction")();
 }
 
 export default DashboardTable;

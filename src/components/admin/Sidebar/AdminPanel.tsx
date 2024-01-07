@@ -15,14 +15,14 @@ function AdminPanel() {
       <h1 className="text-2xl font-bold">Logo.</h1>
       <div className="px-4 py-6">
         <div>
-          <h5 className="capitalize tracking-widest">DASHBOARD</h5>
+          <h5 className="uppercase tracking-widest">DASHBOARD</h5>
           <div className="px-4 py-3">
             <ul>
               <Li url="/admin/dashboard" text="Dashboard" Icon={MdDashboard} />
               <Li url="/admin/products" text="Products" Icon={MdShoppingCart} />
               <Li url="/admin/customers" text="Customers" Icon={FaUsersGear} />
               <Li
-                url="/admin/transaction"
+                url="/admin/transactions"
                 text="Transactions"
                 Icon={MdOutlinePayment}
               />
@@ -32,7 +32,7 @@ function AdminPanel() {
       </div>
       <div className="px-4 py-6">
         <div>
-          <h5 className="capitalize tracking-widest">CHARTS</h5>
+          <h5 className="uppercase tracking-widest">CHARTS</h5>
           <div className="px-4 py-3">
             <ul>
               <Li url="/admin/bar" text="Bar" Icon={IoBarChartSharp} />
