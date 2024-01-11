@@ -78,8 +78,8 @@ function Transactions() {
     []
   );
   return (
-    <div className="col-span-4 px-5 py-4">
-      <div className="mx-3 rounded shadow bg-white">{TransactionsTable()}</div>
+    <div className="lg:col-span-4 px-5 py-4">
+      <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white">{TransactionsTable()}</div>
     </div>
   );
 }

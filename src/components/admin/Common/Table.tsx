@@ -39,9 +39,10 @@ function Table<T extends Object>(
 
     return (
       <>
-      <div className={`${containerClassName} ${pagination?"h-[80vh]":""}`}>
+      <div className={`${containerClassName} ${pagination?"h-[600px]":""}`}>
         <div className="heading text-left">{heading}</div>
-        <table className="w-full" {...getTableProps()}>
+        <div className="overflow-x-scroll ">
+        <table className="md:w-full w-[768px]" {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroups) => (
               <tr {...headerGroups.getHeaderGroupProps()}>
@@ -86,7 +87,7 @@ function Table<T extends Object>(
             })}
           </tbody>
         </table>
-
+        </div>
        
       </div>
       {pagination && (

@@ -4,11 +4,11 @@ import userImg from "../../assets/userpic.png";
 import { HiTrendingUp, HiTrendingDown } from "react-icons/hi";
 import { BarChart, DoughnutChart } from "../../components/admin/Common/Charts";
 import DashboardTable from "../../components/admin/DashboardPage/DashboardTable";
-import  data from "../../assets/data.json";
+import data from "../../assets/data.json";
 
 function Dashboard() {
   return (
-    <div className="col-span-4 px-5 py-4">
+    <div className="lg:col-span-4 sm:px-5 sm:py-4 p-2 overflow-y-scroll">
       {/* top search bar*/}
       <div className="flex items-center justify-between relative">
         <CiSearch className="absolute top-3 left-2" />
@@ -22,7 +22,7 @@ function Dashboard() {
       <hr />
 
       {/* stats */}
-      <div className="grid grid-cols-4">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 xsm:grid-cols-2">
         <WebsiteStats
           type="Revenue"
           value="$340000"
@@ -50,12 +50,10 @@ function Dashboard() {
       </div>
 
       {/* Charts and Inventory section  */}
-      <section className="grid grid-cols-4 ">
-        <div className="bg-white col-span-3 rounded shadow px-8 py-7 m-3">
+      <section className="md:grid md:grid-cols-4 ">
+        <div className="bg-white col-span-3 xsm:rounded xsm:shadow sm:px-8 sm:py-7 xsm:p-4 my-9 xsm:m-3 ">
           <div className="flex justify-center  items-center flex-col">
-            <h5 className="heading">
-              REVENUE & TRANSACTION
-            </h5>
+            <h5 className="heading">REVENUE & TRANSACTION</h5>
             <BarChart
               data_1={[300, 244, 378, 426, 584, 658, 546]}
               data_2={[754, 812, 91, 412, 213, 512, 746]}
@@ -67,7 +65,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded shadow px-3 py-5 m-3">
+        <div className="bg-white xsm:rounded xsm:shadow xl:px-3 lg:px-2  py-5 lg:m-3 m-3 md:mx-0">
           <h5 className="text-gray-400 tracking-widest text-md uppercase text-center">
             INVENTORY
           </h5>
@@ -81,22 +79,22 @@ function Dashboard() {
         </div>
       </section>
 
-      <div className="grid grid-cols-4">
-        <div className="bg-white rounded shadow relative px-3 py-5 m-3">
-        <h5 className="heading">
-              GENDER RATIO
-            </h5>
-          <DoughnutChart
-            labels={["Female", "Male"]}
-            data={[12, 19]}
-            backgroundColor={["red", "green"]}
-            cutout={90}
-          />
-          <BiMaleFemale className="absolute left-0 right-0 mx-auto top-0 bottom-0 my-auto text-3xl"/>
+      <div className="md:grid md:grid-cols-4 ">
+        <div className="bg-white xsm:rounded xsm:shadow xl:px-3 xl:py-5 m-3 xl:block lg:hidden md:w-full xsm:w-[50%] xsm:mx-auto ">
+          <h5 className="heading">GENDER RATIO</h5>
+          <div className="relative">
+            <DoughnutChart
+              labels={["Female", "Male"]}
+              data={[12, 19]}
+              backgroundColor={["red", "green"]}
+              cutout="80%"
+            />
+            <BiMaleFemale className="absolute left-0 right-0 mx-auto top-0 bottom-0 my-auto text-3xl" />
+          </div>
         </div>
-        <div className="col-span-3 m-3 rounded shadow bg-white">
-          <DashboardTable data={data.transaction}/>
-           </div>
+        <div className="lg:col-span-4 xl:col-span-3 md:col-span-3 m-3 xsm:rounded xsm:shadow bg-white xsm:overflow-hidden overflow-x-scroll">
+          <DashboardTable data={data.transaction} />
+        </div>
       </div>
     </div>
   );
@@ -110,8 +108,9 @@ interface Stats {
 }
 
 const WebsiteStats = ({ type, value, percentage, color }: Stats) => {
+  // inset -5px -5px 9px rgba(230, 230, 230,0.5), inset 5px 5px 9px rgb(230, 230, 230,0.5);
   return (
-    <div className="flex items-center justify-between bg-white rounded shadow px-3 py-5 m-3 overflow-x-auto">
+    <div className="flex items-center justify-between bg-white rounded  xsm:shadow shadow-2xl shadow-slate-300  px-3 py-5 m-3 overflow-x-auto">
       <div className="p-2">
         <h5 className=" text-gray-400">{type}</h5>
         <div className="text-2xl font-bold my-1">{value}</div>
