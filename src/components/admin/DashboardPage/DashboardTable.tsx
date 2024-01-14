@@ -1,5 +1,5 @@
 import { Column } from "react-table";
-import Table from "../admin/Common/Table";
+import Table from "../Common/Table";
 
 interface ColumnsType {
   id: string;
@@ -8,7 +8,10 @@ interface ColumnsType {
   amount: number;
   status: string;
 }
-
+/**
+ * Creating Columns (Headers of table) array.
+ * accessor is just a umique id of each header
+ */
 const columns: Column<ColumnsType>[] = [
   { Header: "Id", accessor: "id" },
   { Header: "Quanitty", accessor: "quantity" },
@@ -18,7 +21,7 @@ const columns: Column<ColumnsType>[] = [
 ];
 
 function DashboardTable({ data }: { data: ColumnsType[] }) {
-  return Table<ColumnsType>(columns, data, "w-full", "Top Transaction")();
+  return Table<ColumnsType>(columns, data, "px-3 py-5 m-3", "Top Transaction")();
 }
 
 export default DashboardTable;
