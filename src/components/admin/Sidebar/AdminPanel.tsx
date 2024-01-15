@@ -26,7 +26,7 @@ function AdminPanel() {
         />
       )}
 
-      <div className={`${showMenu?"fixed left-0 ease-in duration-500	w-[50%] z-10":"hidden left-96"} lg:block bg-white px-5 py-4`}>
+      <div className={`${showMenu?"fixed left-0 ease-in duration-500	w-[50%] z-10 h-[100vh]":"hidden left-96"} lg:block bg-white px-5 py-4`}>
         <h1 className="text-2xl font-bold">Logo.</h1>
         <div className="xl:px-4 lg:px-2  py-6">
           <div>
@@ -70,10 +70,11 @@ function AdminPanel() {
           </div>
           <Li
             url="/admin/coupons"
-            text="Generate Coupons"
+            text="Coupon"
             Icon={RiCouponLine}
           />
         </div>
+     {showMenu&& <button className="w-full bg-black text-white rounded py-1" onClick={()=>{setShowMenu(!showMenu)}}>Close</button>}
       </div>
     </>
   );
@@ -86,7 +87,7 @@ interface Liprops {
 }
 const Li = ({ url, text, Icon }: Liprops) => {
   return (
-    <li className="xl:text-lg lg:text-base text-lg flex items-center py-2">
+    <li className="xl:text-lg text-base flex items-center py-2">
       <Icon />
       <Link to={url} className="ml-2">
         {text}

@@ -10,6 +10,10 @@ import {
   AiOutlineSortDescending,
 } from "react-icons/ai";
 
+/** Creating a Higher order function that returns a function
+ * Columns should be the type of Column which is generic type T that extends object and it contains headers of table
+ * Type of data should be the same as columns header type that's why T[]
+ */
 function Table<T extends Object>(
   columns: Column<T>[],
   data: T[],
@@ -39,58 +43,61 @@ function Table<T extends Object>(
 
     return (
       <>
-      <div className={`${containerClassName} ${pagination?"h-[600px]":""}`}>
-        <div className="heading text-left">{heading}</div>
-        <div className="overflow-x-scroll ">
-        <table className="md:w-full w-[768px]" {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroups) => (
-              <tr {...headerGroups.getHeaderGroupProps()}>
-                {headerGroups.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="text-left font-normal py-5 "
-                  >
-                    {" "}
-                    {column.render("Header")}
-                    {column.isSorted && (
-                      <span>
-                        {column.isSortedDesc ? (
-                          <AiOutlineSortDescending className="inline-block" />
-                        ) : (
-                          <AiOutlineSortAscending className="inline-block" />
+        <div
+          className={`${containerClassName} ${pagination ? "h-[600px]" : ""}`}
+        >
+          <div className="heading text-left">{heading}</div>
+          <div className="overflow-x-scroll md:overflow-hidden">
+            <table className="md:w-full w-[768px]" {...getTableProps()}>
+              <thead>
+                {headerGroups.map((headerGroups) => (
+                  <tr {...headerGroups.getHeaderGroupProps()}>
+                    {headerGroups.headers.map((column) => (
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
                         )}
-                      </span>
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        className="text-left border-b-2 border-b-gray-200 py-2"
+                        className="text-left font-normal py-5 "
                       >
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        {" "}
+                        {column.render("Header")}
+                        {column.isSorted && (
+                          <span>
+                            {column.isSortedDesc ? (
+                              <AiOutlineSortDescending className="inline-block" />
+                            ) : (
+                              <AiOutlineSortAscending className="inline-block" />
+                            )}
+                          </span>
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            className="text-left border-b-2 border-b-gray-200 py-2"
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-       
-      </div>
-      {pagination && (
+        {pagination && (
           <div className="flex justify-center items-center p-5">
             <button
               disabled={!canPreviousPage}
@@ -99,7 +106,9 @@ function Table<T extends Object>(
             >
               Previous
             </button>
-            <span className="m-3 font-semibold">{`${pageIndex + 1} of ${pageCount}`}</span>
+            <span className="m-3 font-semibold">{`${
+              pageIndex + 1
+            } of ${pageCount}`}</span>
             <button
               disabled={!canNextPage}
               onClick={nextPage}

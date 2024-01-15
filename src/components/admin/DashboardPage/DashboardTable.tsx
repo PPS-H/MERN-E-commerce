@@ -8,7 +8,10 @@ interface ColumnsType {
   amount: number;
   status: string;
 }
-
+/**
+ * Creating Columns (Headers of table) array.
+ * accessor is just a umique id of each header
+ */
 const columns: Column<ColumnsType>[] = [
   { Header: "Id", accessor: "id" },
   { Header: "Quanitty", accessor: "quantity" },
