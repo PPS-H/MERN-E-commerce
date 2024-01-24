@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import Cart from "./pages/Cart";
 import AllProducts from "./pages/AllProducts";
+import Login from "./pages/Login";
+import { Toaster } from "react-hot-toast";
 
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Transactions = lazy(() => import("./pages/admin/Transactions"));
@@ -20,9 +22,9 @@ const ProductManagement = lazy(
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/TransactionManagement")
 );
-const BarCharts = lazy(() => import("./pages/admin/charts/BarCharts"));
-const PieCharts = lazy(() => import("./pages/admin/charts/PieCharts"));
-const LineCharts = lazy(() => import("./pages/admin/charts/LineCharts"));
+const BarCharts = lazy(() => import("./pages/admin/charts/SalesReports"));
+const PieCharts = lazy(() => import("./pages/admin/charts/ProductsStats"));
+const LineCharts = lazy(() => import("./pages/admin/charts/YearlyReports"));
 const Coupons = lazy(() => import("./pages/admin/Coupons"));
 
 function App() {
@@ -38,10 +40,9 @@ function App() {
           : ""
       }`}
     >
-      {isAdminRoute ? <AdminPanel /> : <Navbar/>}
+      {isAdminRoute ? <AdminPanel /> : <Navbar />}
       <Suspense fallback={<Loding />}>
         <Routes>
-
           {/* Admin  Routes  */}
           <Route path="/admin/dashboard" element={<Dashboard />}></Route>
           <Route path="/admin/products" element={<Products />}></Route>
@@ -59,20 +60,25 @@ function App() {
           ></Route>
 
           {/* Charts */}
-          <Route path="/admin/bar" element={<BarCharts />}></Route>
-          <Route path="/admin/pie" element={<PieCharts />}></Route>
-          <Route path="/admin/line" element={<LineCharts />}></Route>
+          <Route path="/admin/sales-reports" element={<BarCharts />}></Route>
+          <Route path="/admin/products-stats" element={<PieCharts />}></Route>
+          <Route path="/admin/yearly-reports" element={<LineCharts />}></Route>
 
           {/* Coupon  */}
           <Route path="/admin/coupons" element={<Coupons />}></Route>
 
           {/* User Routes  */}
           <Route path="/" element={<Home />}></Route>
-          <Route path="/cart" element={<Cart/>}></Route>
-          <Route path="/products" element={<AllProducts/>}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/products" element={<AllProducts />}></Route>
+          {/* Auth Routes  */}
+          <Route path="/login" element={<Login />}></Route>
         </Routes>
       </Suspense>
-    </div>
+      <Toaster
+  position="bottom-center"
+/>
+   </div>
     // </BrowserRouter>
   );
 }

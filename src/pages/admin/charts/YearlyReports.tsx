@@ -18,7 +18,7 @@ function LineCharts() {
   return (
     <div className="col-span-4 overflow-y-scroll">
       <div className="bg-white col-span-3 xsm:rounded xsm:shadow sm:px-8 sm:py-7 p-4 xsm:m-3 sm:m-6 space-y-6">
-      <h1 className="text-center text-2xl font-semibold">Line Charts</h1>
+      <h1 className="text-center text-2xl font-semibold">Yearly Reports</h1>
         <div>
           <LineChart
             data={[
@@ -29,7 +29,7 @@ function LineCharts() {
             backgroundColor="rgba(53, 162, 255,0.5)"
             labels={months}
           />
-          <h2 className="heading my-5">Active Users</h2>
+          <h2 className="heading my-5">Number of  Users</h2>
         </div>
         <div>
           <LineChart

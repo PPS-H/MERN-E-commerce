@@ -8,7 +8,7 @@ function PieCharts() {
   return (
     <div className="lg:col-span-4 overflow-y-scroll">
       <div className="bg-white col-span-3 xsm:rounded xsm:shadow px-8 py-7 m-6 space-y-6">
-        <h1 className="text-center text-2xl font-semibold">Pie & Doughnut Charts</h1>
+        <h1 className="text-center text-2xl font-semibold">Products Statistics</h1>
         <div className="flex flex-wrap items-center justify-center md:justify-between">
           <div>
             <PieChart

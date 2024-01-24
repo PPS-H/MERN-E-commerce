@@ -17,7 +17,7 @@ function BarCharts() {
   return (
     <div className="lg:col-span-4 overflow-y-scroll">
       <div className="bg-white col-span-3 xsm:rounded xsm:shadow sm:px-8 sm:py-7 p-4 xsm:m-3 sm:m-6  space-y-6">
-        <h2 className="font-bold text-3xl">Bar Charts</h2>
+        <h2 className="font-bold text-3xl">Sales Reports</h2>
         <BarChart
           data_1={[200, 444, 343, 556, 778, 455, 990]}
           data_2={[300, 144, 433, 655, 237, 755, 190]}
@@ -26,7 +26,8 @@ function BarCharts() {
           bg_color1={`hsl(260,50%,30%)`}
           bg_color2={`hsl(360,90%,90%)`}
         />
-        <h2 className="heading">Top Selling Products & Top Customers</h2>
+        {/* <h2 className="heading">Top Selling Products & Top Customers</h2> */}
+        <h2 className="heading">New Products and Customers</h2>
 
         <BarChart
           horizontal={true}

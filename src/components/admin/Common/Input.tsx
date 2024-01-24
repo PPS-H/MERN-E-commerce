@@ -29,7 +29,7 @@ function Input({
         {labelText}
       </label>
       <input
-        required={isRequired ? "required" : ""}
+        required={isRequired}
         type={type}
         name={name}
         id={id}
