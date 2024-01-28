@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { User } from "../../types/types";
-import { MessageResponse } from "../../types/ApiTypes";
+import { MessageResponse, UserResponse } from "../../types/ApiTypes";
+import axios from "axios";
 
 export const userAPI = createApi({
   reducerPath: "userApi", //Reducer name used in store.ts
@@ -21,3 +22,14 @@ export const userAPI = createApi({
 });
 
 export const { useLoginMutation } = userAPI; // useLoginMutation automatically generated according to endpoint name
+
+export const getUser = async (id: string) => {
+  try {
+    const { data }: { data: UserResponse } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_SERVER}/api/v1/user/${id}?id=fugsewdhaiq`
+    );
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -19,7 +19,8 @@ function Table<T extends Object>(
   data: T[],
   containerClassName: string,
   heading: string,
-  pagination?: boolean
+  pagination?: boolean,
+  minHeight?: boolean
 ) {
   return function TableComponent() {
     const options: TableOptions<T> = {
@@ -44,9 +45,9 @@ function Table<T extends Object>(
     return (
       <>
         <div
-          className={`${containerClassName} ${pagination ? "h-[600px]" : ""}`}
+          className={`${containerClassName} ${minHeight ? "h-[650px]" : ""}`}
         >
-          <div className="heading text-left">{heading}</div>
+          <div className="heading text-left text-2xl">{heading}</div>
           <div className="overflow-x-scroll md:overflow-hidden">
             <table className="md:w-full w-[768px]" {...getTableProps()}>
               <thead>
