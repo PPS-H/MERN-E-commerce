@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Input from "../Common/Input";
 import {
   useAddNewProductMutation,
@@ -53,7 +53,7 @@ function ProductForm({
       setValues({ ...values, [e.target.name]: Number(e.target.value) });
     } else if (e.target.name == "photo") {
       const file: File | undefined = e.target.files?.[0];
-
+      // setValues({ ...values, file: file });
       const reader: FileReader = new FileReader();
       if (file) {
         reader.readAsDataURL(file);
@@ -61,20 +61,20 @@ function ProductForm({
         reader.onloadend = () => {
           if (typeof reader.result === "string")
             try {
-              setValues({ ...values, [e.target.name]: reader.result });
-              console.log(values.photo);
-              setValues({ ...values, file: file });
+              setValues({
+                ...values,
+                [e.target.name]: reader.result,
+                file: file,
+              });
             } catch (error) {
               console.log(error);
             }
-            console.log(values)
         };
       }
     } else {
       setValues({ ...values, [e.target.name]: e.target.value });
     }
   };
-
   const handleCreateProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("enter");
@@ -84,6 +84,7 @@ function ProductForm({
     formData.append("stock", String(values.stock!));
     formData.append("category", values.category!);
     formData.append("photo", values.file!);
+    console.log(values.file);
     try {
       const res = await addNewProuduct({
         id: user!._id,
@@ -190,10 +191,10 @@ function ProductForm({
           handleChange={handleChange}
         />
 
-        {values.photo && (
+        {!productId && values.photo && (
           <div className="w-full">
             <img
-              src={`${server}/${photo}`}
+              src={productId ? `${server}/${photo}` : values.photo}
               alt="product-image"
               className="w-[150px] h-[150px] object-fit block mx-auto"
             />
@@ -201,7 +202,11 @@ function ProductForm({
         )}
         {!productId && <button className="btn-primary">{btnText}</button>}
         {productId && (
-          <button className="btn-primary" onClick={handleUpdateProduct}>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={handleUpdateProduct}
+          >
             {btnText}
           </button>
         )}

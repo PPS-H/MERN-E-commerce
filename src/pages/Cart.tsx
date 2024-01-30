@@ -1,77 +1,122 @@
-import Input from "../components/admin/Common/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { CartReducerInitialState } from "../types/ReducerTypes";
+import {
+  addToCart,
+  applyDiscount,
+  calculatePrice,
+  removeFromCart,
+} from "../redux/reducer/cartReducer";
+import { CartItem } from "../types/types";
+import CartItemCard from "../components/CartItemCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { server } from "../redux/store";
 
-const product = {
-  id: 2,
-  category: "Mobile and Tablets",
-  name: "Iphone 14 pro max 256 gb ssd and 8 gb ram silver colour",
-  description:
-    "Product details are a crucial part of any eCommerce website or online marketplace. These details help the potential customers to make an informed decision about the product they are interested in buying. A well-written product description can also be a powerful marketing tool that can help to increase sales.Product details typically include information about the product's features, specifications, dimensions, weight, materials, and other relevant information that can help customers to understand the product better. The product details section should also include high-quality images and videos of the product, as well as customer reviews and ratings.",
-  image_Url: [
-    {
-      public_id: "test",
-      url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
-    },
-    {
-      public_id: "test",
-      url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
-    },
-  ],
-  shop: {
-    name: "Amazon Ltd",
-    shop_avatar: {
-      public_id: "test",
-      url: "https://www.hatchwise.com/wp-content/uploads/2022/05/amazon-logo-1024x683.png",
-    },
-    ratings: 4.2,
-  },
-  price: 120,
-  discount_price: 1099,
-  rating: 5,
-  total_sell: 80,
-  stock: 10,
-};
 function Cart() {
+  const { cartItems, subtotal, tax, discount, shippingCharges, total } =
+    useSelector(
+      (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+    );
+
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>();
+
+  const dispatch = useDispatch();
+
+  const incrementQuantityHandler = (cartItem: CartItem) => {
+    if (cartItem.stock > cartItem.quantity) {
+      dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
+      dispatch(calculatePrice());
+    }
+  };
+  const decrementQuantityHandler = (cartItem: CartItem) => {
+    if (cartItem.quantity > 1) {
+      dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
+      dispatch(calculatePrice());
+    }
+  };
+
+  const removeHandler = (id: string) => {
+    dispatch(removeFromCart(id));
+    dispatch(calculatePrice());
+  };
+
+  useEffect(() => {
+      const { token: cancelToken, cancel } = axios.CancelToken.source();
+      const timeoutID = setTimeout(() => {
+        axios
+          .get(`${server}/api/v1/payments/discount?coupon=${couponCode}`, {
+            cancelToken,
+          })
+          .then((res) => {
+            dispatch(applyDiscount(res.data.discount));
+            setIsValidCouponCode(true);
+            dispatch(calculatePrice())
+          })
+          .catch((e) => {
+            setIsValidCouponCode(false);
+            dispatch(applyDiscount(0));
+            dispatch(calculatePrice())
+            console.log(e.error.data.message);
+          });
+      }, 1000);
+
+      return () => {
+        clearTimeout(timeoutID);
+        setIsValidCouponCode(false);
+        cancel();
+      };
+  }, [couponCode]);
+
   return (
     <div className="grid grid-cols-4 border px-8 py-4">
       <section className="col-span-3 mx-8 my-4 p-4">
-        <h2 className="heading text-xl text-left">Orders Summary</h2>
-        <div className="flex items-center text-lg justify-between">
-          <img
-            src={product.image_Url[0].url}
-            alt="product-image"
-            className="w-[100px] h-[100px]"
+        <h2 className="heading text-xl text-left">
+          {cartItems.length ? "Orders Summary" : "No Orders"}
+        </h2>
+        {cartItems.map((product) => (
+          <CartItemCard
+            key={product.productId}
+            product={product}
+            incrementQuantityHandler={incrementQuantityHandler}
+            decrementQuantityHandler={decrementQuantityHandler}
+            removeHandler={removeHandler}
           />
-          <div className="flex">
-          <p>{product.price}*2=</p>
-          <p>{product.price*2}</p>
-          </div>
-
-          <div className="flex items-center">
-            <button className=" bg-slate-300 px-2">-</button>
-            <p className="mx-2">1</p>
-            <button className=" bg-slate-300 px-2">+</button>
-          </div>
-        </div>
+        ))}
       </section>
-      <section className="flex flex-col justify-center my-4 p-4">
+      <section className="flex flex-col justify-start my-4 p-4">
         <h2 className="heading text-xl">Orders Info</h2>
         <div className="flex flex-col justify-between">
-          <p className="my-2">Subtotal:</p>
-          <p className="my-2">Shipping Charges:</p>
-          <p className="my-2">Tax:</p>
-          <p className="my-2">Discount:</p>
-          <p className="font-bold my-2">Total:</p>
+          <p className="my-2">Subtotal: {subtotal}</p>
+          <p className="my-2">Shipping Charges: {shippingCharges}</p>
+          <p className="my-2">Tax: {tax}</p>
+          <p className="my-2">
+            Discount: <span className="text-red-500">{discount ? `-${discount}` : ``}</span>
+          </p>
+          <p className="font-bold my-2">Total: {total}</p>
         </div>
         <div className="flex flex-col my-2">
           <input
             type="text"
             name="coupon"
+            value={couponCode}
             className="border rounded my-2 px-2 py-2 border-black"
             placeholder="Apply Coupon Code"
-            onClick={() => {}}
+            onChange={(e) => {
+              setCouponCode(e.target.value);
+            }}
           />
-          <button className="bg-black text-white py-2 rounded">
-            Apply Coupon Code
+          {isValidCouponCode && (
+            <p
+              className={`text-center mb-2 text-${
+                isValidCouponCode ? "green" : "red"
+              }-500`}
+            >
+              {isValidCouponCode ? "Discount applied!" : "Invalid Coupon Code!"}
+            </p>
+          )}
+          <button className="bg-black text-white py-2 rounded text-lg">
+            Checkout
           </button>
         </div>
       </section>

@@ -18,6 +18,7 @@ import { getUser } from "./redux/api/userApi";
 import { UserReducerInitialState } from "./types/ReducerTypes";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Shipping from "./pages/Shipping";
 
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Transactions = lazy(() => import("./pages/admin/Transactions"));
@@ -114,6 +115,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/products" element={<AllProducts />}></Route>
+          <Route path="/shipping" element={<Shipping />}></Route>
           {/* Auth Routes  */}
           <Route
             path="/login"

@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "../../components/admin/Common/Table";
@@ -43,7 +43,7 @@ function Products() {
     if (data)
       setRows(
         data?.products.map((item) => ({
-          photo: <img src={`${server}/${item.photo}`} alt="product-image" />,
+          photo: <img src={`${server}/${item.photo}`} alt="product-image" className="w-[60px] h-[60px] object-fit" />,
           name: item.name,
           price: Number(item.price),
           stock: Number(item.stock),
@@ -64,7 +64,7 @@ function Products() {
   return (
     <div className="lg:col-span-4 px-5 py-4 w-full">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white relative">
-        {isLoading ? <Loader width="100%" length={10} /> : ProductsTable}
+        {isLoading ? <Loader width="100%" length={30} /> : ProductsTable}
         {/* <div className="absolute top-5 right-5 rounded-[100%] bg-black text-white py-1 px-3 text-2xl ">+</div> */}
         <Link
           className="absolute top-8 right-5 bg-black text-white rounded px-3 py-2 font-semibold"

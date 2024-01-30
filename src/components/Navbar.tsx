@@ -5,6 +5,8 @@ import { ReactElement } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
+import { IoMdCart } from "react-icons/io";
+
 
 function Navbar({ user }: { user: User | null }) {
   // console.log(user)
@@ -21,6 +23,7 @@ function Navbar({ user }: { user: User | null }) {
       <ul className="flex items-center justify-end">
         <Li className="p-2 m-2" text="Home" url="/" />
         <Li className="p-2 m-2" text="Products" url="/products" />
+        <Li className="p-2 m-2 text-2xl" text={<IoMdCart/>} url="/cart" />
         {user ? (
           <Li className="p-2 m-2 text-2xl" text={<MdLogout />} url="" handleClick={logoutHandler} />
         ) : (

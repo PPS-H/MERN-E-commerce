@@ -16,8 +16,8 @@ function Input({
   id: string;
   name: string;
   value?: string | number;
-  labelText: string;
-  classesForLabel: string;
+  labelText?: string;
+  classesForLabel?: string;
   classesForInput: string;
   placeholder?: string;
   isRequired?: boolean;
@@ -25,9 +25,11 @@ function Input({
 }) {
   return (
     <>
-      <label htmlFor={id} className={classesForLabel}>
-        {labelText}
-      </label>
+      {labelText && (
+        <label htmlFor={id} className={classesForLabel}>
+          {labelText}
+        </label>
+      )}
       <input
         required={isRequired}
         type={type}
