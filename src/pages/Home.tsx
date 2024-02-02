@@ -3,8 +3,6 @@ import ProductCard from "../components/Products/ProductCard";
 import { useLatestProductsQuery } from "../redux/api/productApi";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
-import "react-awesome-slider/dist/styles.css";
-import "react-awesome-slider/dist/custom-animations/cube-animation.css";
 import { CartItem } from "../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, calculatePrice } from "../redux/reducer/cartReducer";

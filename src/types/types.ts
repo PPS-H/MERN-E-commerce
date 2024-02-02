@@ -16,11 +16,28 @@ export interface ShippingInfo {
   country: string;
 }
 
-export interface CartItem {
+export type CartItem = {
   productId: string;
   name: string;
   photo: string;
   price: number;
   quantity: number;
   stock: number;
-}
+};
+export type OrderItem = Omit<CartItem, "stock"> & { _id: string };
+
+export type OrdersType = {
+  orderItems: OrderItem[];
+  shippingInfo: ShippingInfo;
+  subtotal: number;
+  tax: number;
+  discount: number;
+  shippingCharges: number;
+  total: number;
+  status: string;
+  _id: string;
+  user: {
+    name: string;
+    _id: string;
+  };
+};

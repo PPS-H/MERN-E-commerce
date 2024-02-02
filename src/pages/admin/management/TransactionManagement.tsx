@@ -1,4 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { OrdersType } from "../../../types/types";
+import {
+  useDeleteOrderMutation,
+  useGetOrderDetailsQuery,
+  useUpdateOrderMutation,
+} from "../../../redux/api/orderApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { server } from "../../../redux/store";
+import { UserReducerInitialState } from "../../../types/ReducerTypes";
+import { useSelector } from "react-redux";
+import { responseToast } from "../../../components/utils/features";
+import OrderedProductCard from "../../../components/OrderedProductCard";
 
 export type OrderItemType = {
   name: string;
@@ -39,55 +52,108 @@ const orderItems: OrderItemType[] = [
 ];
 
 function TransactionManagement() {
-  const [order, setOrder] = useState<OrderType>({
-    customerName: "Abhishek Singh",
-    address: "77 Black Street",
-    city: "Neyword",
-    state: "Nevada",
-    country: "India",
-    pinCode: 2434341,
-    status: "Processing",
-    subtotal: 4000,
-    discount: 1200,
+  const defaultData: OrdersType = {
+    shippingInfo: {
+      address: "",
+      city: "",
+      pincode: "",
+      state: "",
+      country: "",
+    },
+    subtotal: 0,
     shippingCharges: 0,
-    tax: 200,
-    total: 4000 + 200 + 0 - 1200,
-    orderItems,
-    _id: "asdnasjdhbn",
-  });
+    tax: 0,
+    discount: 0,
+    total: 0,
+    status: "",
+    orderItems: [],
+    _id: "",
+    user: {
+      name: "",
+      _id: "",
+    },
+  };
+
+  const [order, setOrder] = useState<OrdersType>();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerInitialState }) => state.userReducer
+  );
+  const { data, isLoading, isError } = useGetOrderDetailsQuery(id!);
+  if (isError) toast.error("Unable to fetch order details");
+
+  useEffect(() => {
+    if (data) {
+      setOrder({
+        orderItems: data.order.orderItems,
+        shippingInfo: data.order.shippingInfo,
+        subtotal: data.order.subtotal,
+        tax: data.order.tax,
+        discount: data.order.discount,
+        shippingCharges: data.order.shippingCharges,
+        total: data.order.total,
+        status: data.order.status,
+        _id: data.order._id,
+        user: data.order.user,
+      });
+    }
+  }, [data]);
+  const [updateOrder] = useUpdateOrderMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
+
+  const changeStatus = async () => {
+    try {
+      const res = await updateOrder({
+        userId: user!._id,
+        orderId: data!.order._id,
+      });
+      responseToast(res, navigate, "/admin/transactions");
+    } catch (error) {
+      toast.error("Failed to change the order status");
+    }
+  };
+
+  const handleDeleteOrder = async () => {
+    try {
+      const res = await deleteOrder({
+        userId: user!._id,
+        orderId: data!.order._id,
+      });
+      responseToast(res, navigate, "/admin/transactions");
+    } catch (error) {
+      toast.error("Failed to delete order");
+    }
+  };
+
   const {
-    customerName,
-    address,
-    city,
-    country,
-    state,
-    pinCode,
+    shippingInfo: { address, city, pincode, state, country },
     subtotal,
     shippingCharges,
     tax,
     discount,
     total,
     status,
-  } = order;
+    user: { name },
+  } = order || defaultData;
+
   return (
     <div className="col-span-4 place-self-center">
       <div className="flex">
         <div className="bg-white rounded shadow px-5 py-8 min-h-[90vh] min-w-[400px] mx-3">
           <h2 className="heading text-2xl">Order Items</h2>
           <div className="flex items-center justify-between my-5">
-            {order.orderItems.map((item) => {
+            {order?.orderItems.map((item) => {
               return (
-                <>
-                  <div>
-                    <img
-                      src={img}
-                      alt="product-image"
-                      className="w-[50px] h-[50px] object-contain"
-                    />
-                  </div>
-                  <div>{item.name}</div>
-                  <div>{item.price} * {item.quantity} = {item.price*item.quantity}</div>
-                </>
+                <OrderedProductCard
+                  key={item._id}
+                  name={item.name}
+                  price={item.price}
+                  photo={item.photo}
+                  quantity={item.quantity}
+                  productId={item.productId}
+                  _id={item._id}
+                />
               );
             })}
           </div>
@@ -97,11 +163,10 @@ function TransactionManagement() {
           <div className="my-5 px-2 text-md space-y-2">
             <h5 className="font-semibold text-lg">User Info</h5>
             <div className="px-2">
-              <p>Name: {customerName}</p>
-              <br />
+              <p>Name: {name}</p>
               <p>
                 Adderess:{" "}
-                {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
+                {`${address}, ${city}, ${state}, ${country} ${pincode}`}
               </p>
             </div>
             <h5 className="font-semibold text-lg">Amount Info</h5>
@@ -115,11 +180,20 @@ function TransactionManagement() {
             <h5 className="font-semibold text-lg">Status Info</h5>
             <div className="px-2">
               {" "}
-              <p>Status:{status}</p>
+              <p>Status: {status}</p>
             </div>
           </div>
 
-          <button className="btn-primary">Process Status</button>
+          <button className="btn-primary" onClick={changeStatus}>
+            Process Status
+          </button>
+          <button
+            className="btn-primary bg-red-600 mt-0"
+            onClick={handleDeleteOrder}
+            type="button"
+          >
+            Delete Order
+          </button>
         </div>
       </div>
     </div>

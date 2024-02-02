@@ -2,13 +2,8 @@ import { Suspense, lazy, useEffect } from "react";
 import "./index.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-import Loding from "./components/Loader";
 import AdminPanel from "./components/admin/Sidebar/AdminPanel";
-import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
-import Cart from "./pages/Cart";
-import AllProducts from "./pages/AllProducts";
-import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
@@ -18,7 +13,6 @@ import { getUser } from "./redux/api/userApi";
 import { UserReducerInitialState } from "./types/ReducerTypes";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Shipping from "./pages/Shipping";
 
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Transactions = lazy(() => import("./pages/admin/Transactions"));
@@ -35,6 +29,13 @@ const BarCharts = lazy(() => import("./pages/admin/charts/SalesReports"));
 const PieCharts = lazy(() => import("./pages/admin/charts/ProductsStats"));
 const LineCharts = lazy(() => import("./pages/admin/charts/YearlyReports"));
 const Coupons = lazy(() => import("./pages/admin/Coupons"));
+
+const Home = lazy(() => import("./pages/Home"));
+const Cart = lazy(() => import("./pages/Cart"));
+const AllProducts = lazy(() => import("./pages/AllProducts"));
+const Login = lazy(() => import("./pages/Login"));
+const Shipping = lazy(() => import("./pages/Shipping"));
+const Checkout = lazy(() => import("./pages/checkout"));
 
 function App() {
   const location = useLocation();
@@ -57,17 +58,17 @@ function App() {
     });
   }, []);
   return loading ? (
-    <Loader/>
+    <Loader length={30} width="100%" />
   ) : (
     <div
       className={`${
         isAdminRoute
-          ? "xsm:bg-stone-100 lg:grid lg:grid-cols-5 lg:h-[100vh]"
+          ? "xsm:bg-stone-100 lg:grid lg:grid-cols-5 lg:h-[100vh] w-full"
           : ""
       }`}
     >
       {isAdminRoute ? <AdminPanel /> : <Navbar user={user} />}
-      <Suspense fallback={<Loader width="100%" />}>
+      <Suspense fallback={<Loader length={30} width="100%" />}>
         <Routes>
           {/* Admin  Routes  */}
           <Route
@@ -116,6 +117,7 @@ function App() {
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/products" element={<AllProducts />}></Route>
           <Route path="/shipping" element={<Shipping />}></Route>
+          <Route path="/pay" element={<Checkout />}></Route>
           {/* Auth Routes  */}
           <Route
             path="/login"

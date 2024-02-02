@@ -8,7 +8,7 @@ import data from "../../assets/data.json";
 
 function Dashboard() {
   return (
-    <div className="lg:col-span-4 sm:px-5 sm:py-4 p-2 overflow-y-scroll">
+    <div className="lg:col-span-4 sm:px-5 sm:py-4 p-2 overflow-y-scroll w-full">
       {/* top search bar*/}
       <div className="flex items-center justify-between relative">
         <CiSearch className="absolute top-3 left-2" />

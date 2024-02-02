@@ -1,4 +1,4 @@
-import { User } from "./types";
+import { CartItem, OrderItem, OrdersType, ShippingInfo, User } from "./types";
 
 export type MessageResponse = {
   success: boolean;
@@ -66,4 +66,32 @@ export interface UpdateProduct {
 export interface DeleteProduct {
   userId: string;
   productId: string;
+}
+
+export interface NewOrder {
+  shippingInfo: ShippingInfo;
+  user: string;
+  subtotal: number;
+  tax: number;
+  discount: number;
+  shippingCharges: number;
+  total: number;
+  orderItems: CartItem[];
+}
+
+export interface Product {}
+
+
+export type SingleOrderResponse = {
+  success: boolean;
+  order: OrdersType;
+};
+
+export interface AllOrdersResponse {
+  success: boolean;
+  orders: OrdersType[];
+}
+export interface UpdateOrder {
+  userId: string;
+  orderId: string;
 }
