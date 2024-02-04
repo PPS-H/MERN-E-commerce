@@ -4,10 +4,58 @@ import userImg from "../../assets/userpic.png";
 import { HiTrendingUp, HiTrendingDown } from "react-icons/hi";
 import { BarChart, DoughnutChart } from "../../components/admin/Common/Charts";
 import DashboardTable from "../../components/admin/DashboardPage/DashboardTable";
-import data from "../../assets/data.json";
+//import data from "../../assets/data.json";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useGetDashboardStatsQuery } from "../../redux/api/dashboardApi";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
+import { DashboardStats } from "../../types/ApiTypes";
+import Loader from "../../components/Loader";
+import { getMonths } from "../../components/utils/features";
 
+const initialState = {
+  percentageChange: { users: "", products: "", orders: "", revenue: "" },
+  count: { users: "", products: "", orders: "", revenue: "" },
+  inventory: [],
+  chart: {
+    order: [],
+    revenue: [],
+  },
+  userRatio: {
+    male: 0,
+    female: 0,
+  },
+  latestTransactions: [],
+};
+const { lastSixMonths } = getMonths();
 function Dashboard() {
-  return (
+  console.log("render");
+  const [dashboardStats, setDashboardStats] =
+    useState<DashboardStats>(initialState);
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const { data, isLoading, isError } = useGetDashboardStatsQuery(user?._id!);
+  if (isError) return toast.error("Unable to load dashboard data");
+
+  useEffect(() => {
+    if (data) {
+      setDashboardStats({
+        percentageChange: data.stats.percentageChange,
+        count: data.stats.count,
+        inventory: data.stats.inventory,
+        chart: data.stats.chart,
+        userRatio: data.stats.userRatio,
+        latestTransactions: data.stats.latestTransactions,
+      });
+    }
+  }, [data]);
+
+  console.log(data, isLoading);
+
+  return isLoading ? (
+    <Loader width="100%" length={30} />
+  ) : (
     <div className="lg:col-span-4 sm:px-5 sm:py-4 p-2 overflow-y-scroll w-full">
       {/* top search bar*/}
       <div className="flex items-center justify-between relative">
@@ -25,26 +73,26 @@ function Dashboard() {
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 xsm:grid-cols-2">
         <WebsiteStats
           type="Revenue"
-          value="$340000"
-          percentage={14}
+          value={dashboardStats.count.revenue.toString()}
+          percentage={Number(dashboardStats.percentageChange.revenue)}
           color="rgb(180 83 9)"
         />
         <WebsiteStats
           type="Users"
-          value="200"
-          percentage={-14}
+          value={dashboardStats.count.users.toString()}
+          percentage={Number(dashboardStats.percentageChange.users)}
           color="rgb(87, 224, 74)"
         />
         <WebsiteStats
           type="Transactions"
-          value="25000"
-          percentage={30}
+          value={dashboardStats.count.orders.toString()}
+          percentage={Number(dashboardStats.percentageChange.orders)}
           color="rgb(44, 151, 222)"
         />
         <WebsiteStats
           type="Products"
-          value="3000"
-          percentage={25}
+          value={dashboardStats.count.products.toString()}
+          percentage={Number(dashboardStats.percentageChange.products)}
           color="rgb(189, 177, 53)"
         />
       </div>
@@ -53,14 +101,15 @@ function Dashboard() {
       <section className="md:grid md:grid-cols-4 ">
         <div className="bg-white col-span-3 xsm:rounded xsm:shadow sm:px-8 sm:py-7 xsm:p-4 my-9 xsm:m-3 ">
           <div className="flex justify-center  items-center flex-col">
-            <h5 className="heading">REVENUE & TRANSACTION</h5>
+            <h5 className="heading">REVENUE & TRANSACTION (Past 6 months)</h5>
             <BarChart
-              data_1={[300, 244, 378, 426, 584, 658, 546]}
-              data_2={[754, 812, 91, 412, 213, 512, 746]}
+              data_1={dashboardStats.chart.revenue}
+              data_2={dashboardStats.chart.order}
               bg_color1="rgb(0,155,255)"
               bg_color2="rgb(53,162,235,0.8)"
               title_1="Revenue"
               title_2="Transaction"
+              labels={lastSixMonths}
             />
           </div>
         </div>
@@ -69,12 +118,15 @@ function Dashboard() {
           <h5 className="text-gray-400 tracking-widest text-md uppercase text-center">
             INVENTORY
           </h5>
-          <div className="flex justify-around items-center my-4">
-            <div className="text-xs">Laptops</div>
-            <div className="w-[50%] h-[5px] bg-gray-200 rounded">
-              <div className="w-[40%] h-[5px] bg-red-400 rounded"></div>
-            </div>
-            <div className="text-xs">40%</div>
+          <div className="flex justify-around items-center my-4 flex-col">
+            {dashboardStats.inventory.map((item, i) => {
+              const [heading, value] = Object.entries(item)[0];
+              return (
+                <div className="w-full my-2" key={i}>
+                  <InventoryItem category={heading} value={value} />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -84,8 +136,8 @@ function Dashboard() {
           <h5 className="heading">GENDER RATIO</h5>
           <div className="relative">
             <DoughnutChart
-              labels={["Female", "Male"]}
-              data={[12, 19]}
+              labels={Object.keys(dashboardStats.userRatio)}
+              data={Object.values(dashboardStats.userRatio)}
               backgroundColor={["red", "green"]}
               cutout="80%"
             />
@@ -93,7 +145,7 @@ function Dashboard() {
           </div>
         </div>
         <div className="lg:col-span-4 xl:col-span-3 md:col-span-3 m-3 xsm:rounded xsm:shadow bg-white xsm:overflow-hidden overflow-x-scroll">
-          <DashboardTable data={data.transaction} />
+          <DashboardTable data={dashboardStats.latestTransactions} />
         </div>
       </div>
     </div>
@@ -149,13 +201,29 @@ interface InventoryProps {
 }
 
 const InventoryItem = ({ category, value }: InventoryProps) => {
+  const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
   return (
-    <div className="flex justify-around items-center my-4">
-      <div className="text-xs">{category}</div>
-      <div className="w-[50%] h-[5px] bg-gray-200 rounded">
-        <div className="w-[40%] h-[5px] bg-red-400 rounded"></div>
+    // <div className="flex justify-around items-center my-4">
+    //   <div className="text-xs">{category}</div>
+    //   <div className="w-[50%] h-[5px] bg-gray-200 rounded">
+    //     <div className="w-[40%] h-[5px] bg-red-400 rounded"></div>
+    //   </div>
+    //   <div className="text-xs">{value}%</div>
+    // </div>
+    <div className="flex w-full justify-between items-center">
+      <div className="text-xs w-[20%]">
+        {category.charAt(0).toUpperCase() + category.slice(1)}
       </div>
-      <div className="text-xs">{value}%</div>
+      <div className="w-[40%] h-[5px] bg-gray-200 rounded">
+        <div
+          className="w-[40%] h-[5px] rounded"
+          style={{
+            backgroundColor: randomColor,
+          }}
+        ></div>
+      </div>
+      <div className="text-xs w-[20%]">{value}%</div>
     </div>
   );
 };

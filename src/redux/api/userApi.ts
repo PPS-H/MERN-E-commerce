@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { User } from "../../types/types";
-import { MessageResponse, UserResponse } from "../../types/ApiTypes";
+import {
+  AllUserResponse,
+  DeleteUser,
+  MessageResponse,
+  UserResponse,
+} from "../../types/ApiTypes";
 import axios from "axios";
 
 export const userAPI = createApi({
@@ -8,6 +13,7 @@ export const userAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BACKEND_SERVER}/api/v1/user`,
   }), // Base url
+  tagTypes:["users"],
   endpoints: (builder) => ({
     //mutation is for data manipulation
     login: builder.mutation<MessageResponse, User>({
@@ -17,11 +23,23 @@ export const userAPI = createApi({
         method: "POST",
         body: user,
       }),
+      invalidatesTags:["users"]
     }), // Can add more endpoints also
+    getAllUser: builder.query<AllUserResponse, string>({
+      query: (id) => `all?id=${id}`,
+      providesTags:["users"]
+    }),
+    deleteUser: builder.mutation<MessageResponse, DeleteUser>({
+      query: ({ userId, adminId }) => ({
+        url: `${userId}?id=${adminId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags:["users"]
+    }),
   }),
 });
 
-export const { useLoginMutation } = userAPI; // useLoginMutation automatically generated according to endpoint name
+export const { useLoginMutation,useGetAllUserQuery,useDeleteUserMutation } = userAPI; // useLoginMutation automatically generated according to endpoint name
 
 export const getUser = async (id: string) => {
   try {

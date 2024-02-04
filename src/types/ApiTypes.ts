@@ -1,4 +1,12 @@
-import { CartItem, OrderItem, OrdersType, ShippingInfo, User } from "./types";
+import {
+  CartItem,
+  OrderItem,
+  OrdersType,
+  ChangeInStats,
+  ShippingInfo,
+  User,
+  RevenueDistribution,
+} from "./types";
 
 export type MessageResponse = {
   success: boolean;
@@ -7,6 +15,15 @@ export type MessageResponse = {
 export type UserResponse = {
   success: boolean;
   user: User;
+};
+export type AllUserResponse = {
+  success: boolean;
+  users: User[];
+};
+
+export type DeleteUser = {
+  userId: string;
+  adminId: string;
 };
 
 export interface ProductType {
@@ -81,7 +98,6 @@ export interface NewOrder {
 
 export interface Product {}
 
-
 export type SingleOrderResponse = {
   success: boolean;
   order: OrdersType;
@@ -94,4 +110,81 @@ export interface AllOrdersResponse {
 export interface UpdateOrder {
   userId: string;
   orderId: string;
+}
+
+export interface latestTransactions {
+  _id: string;
+  discount: number;
+  amount: number;
+  quantity: number;
+  status: string;
+}
+
+export interface DashboardStats {
+  percentageChange: ChangeInStats;
+  count: ChangeInStats;
+  inventory: Record<string, number>[];
+  chart: {
+    order: number[];
+    revenue: number[];
+  };
+  userRatio: {
+    male: number;
+    female: number;
+  };
+  latestTransactions: latestTransactions[];
+}
+
+export interface DashboardResponse {
+  success: boolean;
+  stats: DashboardStats;
+}
+
+export interface ProductsStats {
+  Orders: {
+    processing: number;
+    shipped: number;
+    delivered: number;
+  };
+  inventory: Record<string, number>[];
+  stock: {
+    inStock: number;
+    outOfStock: number;
+  };
+  revenueDistribution: RevenueDistribution;
+  userAgeGroups: {
+    teen: number;
+    adult: number;
+    old: number;
+  };
+  userRoles: {
+    admin: number;
+    customer: number;
+  };
+}
+
+export interface ProductsStatsResponse {
+  success: boolean;
+  productStats: ProductsStats;
+}
+
+export interface SalesReport {
+  products: number[];
+  users: number[];
+  orders: number[];
+}
+export interface SalesReportResponse {
+  success: boolean;
+  salesReports: SalesReport;
+}
+
+export interface YearlyReport {
+  products: number[];
+  users: number[];
+  revenue: number[];
+  discount: number[];
+}
+export interface YearlyReportResponse {
+  success: boolean;
+  yearlyReports: YearlyReport;
 }

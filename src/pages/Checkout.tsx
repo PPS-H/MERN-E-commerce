@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 // console.log(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-
 const CheckoutForm = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const stripe = useStripe();
@@ -35,21 +34,15 @@ const CheckoutForm = () => {
       redirect: "if_required",
     });
 
-    // const { paymentIntent, error } = await stripe.confirmCardPayment("pi_3Of4TQSEw55mHWf61npEhF7a_secret_s2KwRdyV3ybPgsb4HqIicbKE9", {
-    //   payment_method: {
-    //   card: elements.getElement(CardElement),
-    //   billing_details: {
-    //   name: 'John Doe',
-    //   },
-    //   },
-    //   });
+    // const { paymentIntent, error } = await stripe.retrievePaymentIntent(
+    //   "pi_3Of4TQSEw55mHWf61npEhF7a_secret_s2KwRdyV3ybPgsb4HqIicbKE9"
+    // );
 
-      
     console.log(paymentIntent, error);
-    
+
     if (error) {
-        console.log(error);
-        
+      console.log(error);
+
       setIsProcessing(false);
       return toast.error(error.message || "Something went wrong");
     }
@@ -72,7 +65,7 @@ function Checkout() {
   const options = {
     // passing the client secret obtained from the server
     clientSecret:
-      "pi_3Of4TQSEw55mHWf61npEhF7a_secret_s2KwRdyV3ybPgsb4HqIicbKE9",
+      "pi_3OfQufSEw55mHWf60vgC5WDa_secret_9OKFKFyOJT8cNeNRLVcB5Hl1J",
   };
 
   return (
@@ -83,3 +76,17 @@ function Checkout() {
 }
 
 export default Checkout;
+
+// router.post("/create-checkout-session", async (req, res) => {
+//   const customer = await stripe.customers.create({
+//     metadata: {
+//       userId: req.body.data.user.user_id,
+//       cart: JSON.stringify(req.body.data.cart),
+//       total: req.body.data.total,
+//     },
+//   });
+//   const line_items = req.body.data.cart.map((item) => {
+//     return {
+//       price_data: {
+//         currency: "inr",
+//         product_data

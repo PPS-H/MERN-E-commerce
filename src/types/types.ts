@@ -41,3 +41,18 @@ export type OrdersType = {
     _id: string;
   };
 };
+
+export type ChangeInStats = {
+  users: string | number;
+  products: string | number;
+  orders: string | number;
+  revenue: string | number;
+};
+
+export type RevenueDistribution = {
+  netMargin: number;
+  discount: number;
+  productionCost: number;
+  burnt: number;
+  marketingCost: number;
+};

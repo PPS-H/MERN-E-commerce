@@ -25,9 +25,9 @@ const ProductManagement = lazy(
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/TransactionManagement")
 );
-const BarCharts = lazy(() => import("./pages/admin/charts/SalesReports"));
-const PieCharts = lazy(() => import("./pages/admin/charts/ProductsStats"));
-const LineCharts = lazy(() => import("./pages/admin/charts/YearlyReports"));
+const SalesReport = lazy(() => import("./pages/admin/charts/SalesReports"));
+const ProductsStats = lazy(() => import("./pages/admin/charts/ProductsStats"));
+const YearlyReport = lazy(() => import("./pages/admin/charts/YearlyReports"));
 const Coupons = lazy(() => import("./pages/admin/Coupons"));
 
 const Home = lazy(() => import("./pages/Home"));
@@ -35,7 +35,8 @@ const Cart = lazy(() => import("./pages/Cart"));
 const AllProducts = lazy(() => import("./pages/AllProducts"));
 const Login = lazy(() => import("./pages/Login"));
 const Shipping = lazy(() => import("./pages/Shipping"));
-const Checkout = lazy(() => import("./pages/checkout"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const location = useLocation();
@@ -102,11 +103,11 @@ function App() {
             ></Route>
 
             {/* Charts */}
-            <Route path="/admin/sales-reports" element={<BarCharts />}></Route>
-            <Route path="/admin/products-stats" element={<PieCharts />}></Route>
+            <Route path="/admin/sales-reports" element={<SalesReport />}></Route>
+            <Route path="/admin/products-stats" element={<ProductsStats />}></Route>
             <Route
               path="/admin/yearly-reports"
-              element={<LineCharts />}
+              element={<YearlyReport />}
             ></Route>
 
             {/* Coupon  */}
@@ -127,6 +128,7 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </Suspense>
       <Toaster position="bottom-center" />

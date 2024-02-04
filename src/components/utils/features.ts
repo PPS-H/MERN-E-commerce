@@ -3,6 +3,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import { NavigateFunction } from "react-router-dom";
+import moment from "moment";
 
 type ResponseType =
   | {
@@ -25,4 +26,18 @@ export const responseToast = (
     const msg = (err.data as MessageResponse).message;
     toast.error(msg);
   }
+};
+
+export const getMonths = () => {
+  let lastSixMonths: string[] = [];
+  let lastTwelveMonths: string[] = [];
+  const date = moment();
+
+  for (let index = 0; index < 6; index++) {
+    lastSixMonths.unshift(moment().subtract(index, "months").format("MMMM"));
+  }
+  for (let index = 0; index < 12; index++) {
+    lastTwelveMonths.unshift(moment().subtract(index, "months").format("MMMM"));
+  }
+  return { lastSixMonths, lastTwelveMonths };
 };

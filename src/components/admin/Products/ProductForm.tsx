@@ -97,13 +97,16 @@ function ProductForm({
     }
   };
 
-  const handleUpdateProduct = async () => {
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault()
     const product = new FormData();
+    console.log(values)
     if (values.name) product.append("name", values.name);
-    if (values.price) product.append("price", String(values.price));
-    if (values.stock) product.append("stock", String(values.stock));
+     product.append("price", String(values.price));
+     product.append("stock", String(values.stock));
     if (values.category) product.append("category", values.category);
     if (values.file) product.append("photo", values.file);
+console.log(product);
 
     try {
       const res = await updateProduct({
