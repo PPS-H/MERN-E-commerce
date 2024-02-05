@@ -62,9 +62,9 @@ function AdminPanel() {
             <h5 className="uppercase tracking-widest">CHARTS</h5>
             <div className="px-4 py-3">
               <ul>
-                <Li url="/admin/bar" text="Bar" Icon={IoBarChartSharp} />
-                <Li url="/admin/pie" text="Pie" Icon={FaChartPie} />
-                <Li url="/admin/line" text="Line" Icon={BsGraphUp} />
+                <Li url="/admin/sales-reports" text="Sales Reports" Icon={IoBarChartSharp} />
+                <Li url="/admin/products-stats" text="Products Stats" Icon={FaChartPie} />
+                <Li url="/admin/yearly-reports" text="Yearly Reports" Icon={BsGraphUp} />
               </ul>
             </div>
           </div>

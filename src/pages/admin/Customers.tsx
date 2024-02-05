@@ -1,11 +1,17 @@
-import { ReactElement, useCallback } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Column } from "react-table";
 import Table from "../../components/admin/Common/Table";
 import { FaTrash } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import {
+  useDeleteUserMutation,
+  useGetAllUserQuery,
+} from "../../redux/api/userApi";
+import toast from "react-hot-toast";
+import Loader from "../../components/Loader";
+import { responseToast } from "../../components/utils/features";
 
-
-const img = "https://randomuser.me/api/portraits/women/54.jpg";
-const img2 = "https://randomuser.me/api/portraits/women/50.jpg";
 interface ColumnsType {
   avatar: ReactElement;
   name: string;
@@ -14,54 +20,6 @@ interface ColumnsType {
   role: string;
   action: ReactElement;
 }
-
-const arr: ColumnsType[] = [
-  {
-    avatar: (
-      <img
-        style={{
-          borderRadius: "50%",
-          height:"40px",
-          width:"40px",
-        }}
-        src={img}
-        alt="Shoes"
-      />
-    ),
-    name: "Emily Palmer",
-    email: "emily.palmer@example.com",
-    gender: "female",
-    role: "user",
-    action: (
-      <button>
-        <FaTrash />
-      </button>
-    ),
-  },
-
-  {
-    avatar: (
-      <img
-        style={{
-          borderRadius: "50%",
-          height:"40px",
-          width:"40px",
-        }}
-        src={img2}
-        alt="Shoes"
-      />
-    ),
-    name: "May Scoot",
-    email: "aunt.may@example.com",
-    gender: "female",
-    role: "user",
-    action: (
-      <button>
-        <FaTrash />
-      </button>
-    ),
-  },
-];
 
 const columns: Column<ColumnsType>[] = [
   { Header: "Avatar", accessor: "avatar" },
@@ -73,14 +31,68 @@ const columns: Column<ColumnsType>[] = [
 ];
 
 function Customers() {
-  const CustomersTable = useCallback(
-    Table<ColumnsType>(columns, arr, "px-3 py-5 m-3", "Customers", true),
-    []
-  );
+  const [rows, setRows] = useState<ColumnsType[]>([]);
+  const { user } = useSelector((state: RootState) => state.userReducer);
+  const { data, isError, isLoading,refetch } = useGetAllUserQuery(user!._id);
+  if (isError) return toast.error("Unable to fetch user accounts");
+
+  const [deleteUser] = useDeleteUserMutation();
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      const res = await deleteUser({ userId, adminId: user!._id });
+      responseToast(res, null, "");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      setRows(
+        data.users.map((item) => {
+          return {
+            avatar: (
+              <img
+                style={{
+                  borderRadius: "50%",
+                  height: "40px",
+                  width: "40px",
+                }}
+                src={item.photo}
+                alt={item.name}
+              />
+            ),
+            name: item.name,
+            email: item.email,
+            gender: item.gender,
+            role: item.role,
+            action: (
+              <button
+                onClick={() => {
+                  handleDeleteUser(item._id);
+                }}
+              >
+                <FaTrash />
+              </button>
+            ),
+          };
+        })
+      );
+    }
+  }, [data]);
+
+  const CustomersTable = Table<ColumnsType>(
+    columns,
+    rows,
+    "px-3 py-5 m-3",
+    "Customers",
+    rows.length > 6,
+    true
+  )();
   return (
     <div className="lg:col-span-4 px-5 py-4">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white">
-        {CustomersTable()}
+        {isLoading ? <Loader  /> : CustomersTable}
       </div>
     </div>
   );
