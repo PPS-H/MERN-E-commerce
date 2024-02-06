@@ -21,7 +21,7 @@ function Input({
   classesForInput: string;
   placeholder?: string;
   isRequired?: boolean;
-  handleChange: ChangeEventHandler<HTMLInputElement>;
+  handleChange?: ChangeEventHandler<HTMLInputElement>;
 }) {
   return (
     <>

@@ -112,7 +112,7 @@ function AllProducts() {
         </div>
       </section>
       {productsLoading ? (
-        <Loader length={30} />
+        <Loader  />
       ) : (
         <section className="col-span-3">
           <div className="px-4">

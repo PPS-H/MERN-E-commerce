@@ -11,8 +11,10 @@ import CartItemCard from "../components/CartItemCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { server } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
+  const navigate = useNavigate();
   const { cartItems, subtotal, tax, discount, shippingCharges, total } =
     useSelector(
       (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
@@ -41,7 +43,14 @@ function Cart() {
     dispatch(calculatePrice());
   };
 
+  const handleCheckout = () => {
+    if (cartItems.length) {
+      navigate("/shipping");
+    }
+  };
+
   useEffect(() => {
+    if (couponCode) {
       const { token: cancelToken, cancel } = axios.CancelToken.source();
       const timeoutID = setTimeout(() => {
         axios
@@ -51,12 +60,12 @@ function Cart() {
           .then((res) => {
             dispatch(applyDiscount(res.data.discount));
             setIsValidCouponCode(true);
-            dispatch(calculatePrice())
+            dispatch(calculatePrice());
           })
           .catch((e) => {
             setIsValidCouponCode(false);
             dispatch(applyDiscount(0));
-            dispatch(calculatePrice())
+            dispatch(calculatePrice());
             console.log(e.error.data.message);
           });
       }, 1000);
@@ -66,6 +75,7 @@ function Cart() {
         setIsValidCouponCode(false);
         cancel();
       };
+    }
   }, [couponCode]);
 
   return (
@@ -91,7 +101,10 @@ function Cart() {
           <p className="my-2">Shipping Charges: {shippingCharges}</p>
           <p className="my-2">Tax: {tax}</p>
           <p className="my-2">
-            Discount: <span className="text-red-500">{discount ? `-${discount}` : ``}</span>
+            Discount:{" "}
+            <span className="text-red-500">
+              {discount ? `-${discount}` : ``}
+            </span>
           </p>
           <p className="font-bold my-2">Total: {total}</p>
         </div>
@@ -115,7 +128,10 @@ function Cart() {
               {isValidCouponCode ? "Discount applied!" : "Invalid Coupon Code!"}
             </p>
           )}
-          <button className="bg-black text-white py-2 rounded text-lg">
+          <button
+            className="bg-black text-white py-2 rounded text-lg"
+            onClick={handleCheckout}
+          >
             Checkout
           </button>
         </div>

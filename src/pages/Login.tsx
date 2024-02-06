@@ -18,7 +18,7 @@ function Login() {
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
 
-      console.log(user);
+      //  console.log(user);
       let data;
       try {
         data = await getUser(user.uid);
@@ -42,6 +42,7 @@ function Login() {
           toast.error(message);
         }
       }
+      toast.success("Hi," + user.displayName);
     } catch (error) {
       toast.error("Sign in failed");
     }

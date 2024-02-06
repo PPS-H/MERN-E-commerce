@@ -1,3 +1,11 @@
+export type CustomError = {
+  status: number;
+  data: {
+    message: string;
+    success: boolean;
+  };
+};
+
 export interface User {
   name: string;
   email: string;
@@ -11,7 +19,7 @@ export interface User {
 export interface ShippingInfo {
   address: string;
   city: string;
-  pincode: string;
+  pinCode: string;
   state: string;
   country: string;
 }

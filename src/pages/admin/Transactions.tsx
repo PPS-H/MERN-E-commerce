@@ -75,7 +75,7 @@ function Transactions() {
   return (
     <div className="lg:col-span-4 px-5 py-4">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white">
-        {isLoading ? <Loader width="100%" length={30} /> : TransactionsTable}
+        {isLoading ? <Loader /> : TransactionsTable}
       </div>
     </div>
   );

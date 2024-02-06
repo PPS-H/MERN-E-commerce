@@ -18,7 +18,7 @@ function SalesReport() {
   const users = data?.salesReports.users || [];
 
   return isLoading ? (
-    <Loader width="100%" length={30} />
+    <Loader />
   ) : (
     <div className="lg:col-span-4 overflow-y-scroll">
       <div className="bg-white col-span-3 xsm:rounded xsm:shadow sm:px-8 sm:py-7 p-4 xsm:m-3 sm:m-6  space-y-6">

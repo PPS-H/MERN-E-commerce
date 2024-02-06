@@ -20,9 +20,22 @@ function Home() {
 
   const handleAddToCart = (cartItem: CartItem) => {
     if (cartItem.stock < 1) return toast.error("Out of stock");
-    dispatch(addToCart(cartItem));
-    dispatch(calculatePrice());
-    toast.success("Added to cart");
+    let result;
+    if (cartItems) {
+      result = cartItems.find((i) => i.productId === cartItem.productId);
+    }
+
+    if (result) {
+      toast((t) => (
+        <span>
+          <strong>Already added to the cart!</strong>
+        </span>
+      ));
+    } else {
+      dispatch(addToCart(cartItem));
+      dispatch(calculatePrice());
+      toast.success("Added to cart");
+    }
   };
 
   return (

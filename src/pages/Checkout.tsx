@@ -3,12 +3,17 @@ import {
   PaymentElement,
   useStripe,
   useElements,
-  CardElement,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { useNewOrderMutation } from "../redux/api/orderApi";
+import { NewOrder } from "../types/ApiTypes";
+import { resetCart } from "../redux/reducer/cartReducer";
+import { responseToast } from "../components/utils/features";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 // console.log(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -18,6 +23,20 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    cartItems,
+    subtotal,
+    tax,
+    discount,
+    shippingCharges,
+    total,
+    shippingInfo,
+  } = useSelector((state: RootState) => state.cartReducer);
+
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const [newOrder] = useNewOrderMutation();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,12 +44,21 @@ const CheckoutForm = () => {
     if (!stripe || !elements) return;
     setIsProcessing(true);
 
-    const order = {};
+    const orderData: NewOrder = {
+      shippingInfo,
+      user: user?._id!,
+      subtotal,
+      tax,
+      discount,
+      shippingCharges,
+      total,
+      orderItems: cartItems,
+    };
 
     const { paymentIntent, error } = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
-      confirmParams: { return_url: window.location.origin},
+      confirmParams: { return_url: window.location.origin },
       redirect: "if_required",
     });
 
@@ -48,24 +76,34 @@ const CheckoutForm = () => {
     }
     if (paymentIntent.status === "succeeded") {
       console.log("Placing order");
-      navigate("/orders");
+      const res=await newOrder(orderData)
+      dispatch(resetCart())
+      responseToast(res,navigate,"/myorders");
     }
     setIsProcessing(false);
   };
   return (
     <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      <button type="submit" disabled={isProcessing}>
-        {isProcessing ? "Processing..." : "Pay"}
-      </button>
+      <h1 className="text-center text-4xl my-5">Pay to Proceed </h1>
+      <div className="w-[30%] mx-auto">
+        <PaymentElement className="" />
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className="bg-black text-white w-full rounded py-1 my-3"
+        >
+          {isProcessing ? "Processing..." : "Pay"}
+        </button>
+      </div>
     </form>
   );
 };
 function Checkout() {
+  const location = useLocation();
+  const clientSecret: string | undefined = location.state;
+  if (!clientSecret) return <Navigate to={"/shipping"} />;
   const options = {
-    // passing the client secret obtained from the server
-    clientSecret:
-      "pi_3OfQufSEw55mHWf60vgC5WDa_secret_9OKFKFyOJT8cNeNRLVcB5Hl1J",
+    clientSecret,
   };
 
   return (
@@ -76,17 +114,3 @@ function Checkout() {
 }
 
 export default Checkout;
-
-// router.post("/create-checkout-session", async (req, res) => {
-//   const customer = await stripe.customers.create({
-//     metadata: {
-//       userId: req.body.data.user.user_id,
-//       cart: JSON.stringify(req.body.data.cart),
-//       total: req.body.data.total,
-//     },
-//   });
-//   const line_items = req.body.data.cart.map((item) => {
-//     return {
-//       price_data: {
-//         currency: "inr",
-//         product_data

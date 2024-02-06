@@ -36,6 +36,7 @@ const AllProducts = lazy(() => import("./pages/AllProducts"));
 const Login = lazy(() => import("./pages/Login"));
 const Shipping = lazy(() => import("./pages/Shipping"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const MyOrders = lazy(() => import("./pages/MyOrders"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
@@ -59,7 +60,7 @@ function App() {
     });
   }, []);
   return loading ? (
-    <Loader length={30} width="100%" />
+    <Loader />
   ) : (
     <div
       className={`${
@@ -69,7 +70,7 @@ function App() {
       }`}
     >
       {isAdminRoute ? <AdminPanel /> : <Navbar user={user} />}
-      <Suspense fallback={<Loader length={30} width="100%" />}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           {/* Admin  Routes  */}
           <Route
@@ -119,6 +120,7 @@ function App() {
           <Route path="/products" element={<AllProducts />}></Route>
           <Route path="/shipping" element={<Shipping />}></Route>
           <Route path="/pay" element={<Checkout />}></Route>
+          <Route path="/myorders" element={<MyOrders />}></Route>
           {/* Auth Routes  */}
           <Route
             path="/login"

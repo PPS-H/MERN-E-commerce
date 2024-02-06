@@ -64,7 +64,7 @@ function Products() {
   return (
     <div className="lg:col-span-4 px-5 py-4 w-full">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white relative">
-        {isLoading ? <Loader width="100%" length={30} /> : ProductsTable}
+        {isLoading ? <Loader /> : ProductsTable}
         {/* <div className="absolute top-5 right-5 rounded-[100%] bg-black text-white py-1 px-3 text-2xl ">+</div> */}
         <Link
           className="absolute top-8 right-5 bg-black text-white rounded px-3 py-2 font-semibold"

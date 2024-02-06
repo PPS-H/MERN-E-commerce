@@ -13,5 +13,5 @@ export interface CartReducerInitialState {
   discount: number;
   shippingCharges: number;
   total: number;
-  shippinInfo: ShippingInfo;
+  shippingInfo: ShippingInfo;
 }
