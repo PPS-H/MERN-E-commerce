@@ -1,15 +1,28 @@
 import { Link } from "react-router-dom";
 import { User } from "../types/types";
 import { MdLogin, MdLogout } from "react-icons/md";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import { IoMdCart } from "react-icons/io";
 import { CartReducerInitialState } from "../types/ReducerTypes";
 import { useSelector } from "react-redux";
+import { HiMenuAlt4 } from "react-icons/hi";
 
 function Navbar({ user }: { user: User | null }) {
+  const [phoneActive, setPhoneActive] = useState<boolean>(
+    window.innerWidth < 1024
+  );
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const handleClick = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const checkMobileMenu = () => {
+    if (phoneActive) setShowMenu(!showMenu);
+  };
+
   const { cartItems } = useSelector(
     (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
   );
@@ -23,34 +36,47 @@ function Navbar({ user }: { user: User | null }) {
     }
   };
   return (
-    <div className="w-full flex justify-between">
-      <img
-        src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-        alt="logo"
-        className="mx-3 my-5"
-      />
-      <ul className="flex items-center justify-end">
-        <Li className="p-2 m-2" text="Home" url="/" />
-        <Li className="p-2 m-2" text="Products" url="/products" />
-        <Li className="p-2 m-2" text="My orders" url="/myorders" />
-        <Li
-          className="p-2 m-2 text-2xl relative"
-          text={<IoMdCart />}
-          url="/cart"
-          cartNumber={cartItems.length}
+    <>
+      {/* {phoneActive && (
+        <div className="block h-[50px]">
+          <div className="block w-full bg-white p-2 fixed z-40">
+            <HiMenuAlt4
+              className="rounded-[100%] bg-white text-4xl"
+              onClick={handleClick}
+            />
+          </div>
+        </div>
+      )} */}
+
+      <div className="w-full flex justify-between bg-white h-[80px] fixed z-50 top-0">
+        <img
+          src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+          alt="logo"
+          className="mx-3 my-4 md:block hidden"
         />
-        {user ? (
+        <ul className="flex items-center md:justify-end justify-evenly w-full">
+          <Li className="sm:p-2 m-2" text="Home" url="/" />
+          <Li className="sm:p-2 m-2" text="Products" url="/products" />
+          <Li className="sm:p-2 m-2" text="My orders" url="/myorders" />
           <Li
-            className="p-2 m-2 text-2xl"
-            text={<MdLogout />}
-            url=""
-            handleClick={logoutHandler}
+            className="p-2 m-2 text-2xl relative"
+            text={<IoMdCart />}
+            url="/cart"
+            cartNumber={cartItems.length}
           />
-        ) : (
-          <Li className="p-2 m-2 text-2xl" text={<MdLogin />} url="/login" />
-        )}
-      </ul>
-    </div>
+          {user ? (
+            <Li
+              className="p-2 m-2 text-2xl"
+              text={<MdLogout />}
+              url=""
+              handleClick={logoutHandler}
+            />
+          ) : (
+            <Li className="p-2 m-2 text-2xl" text={<MdLogin />} url="/login" />
+          )}
+        </ul>
+      </div>
+    </>
   );
 }
 

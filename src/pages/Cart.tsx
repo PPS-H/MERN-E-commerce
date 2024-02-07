@@ -79,8 +79,8 @@ function Cart() {
   }, [couponCode]);
 
   return (
-    <div className="grid grid-cols-4 border px-8 py-4">
-      <section className="col-span-3 mx-8 my-4 p-4">
+    <div className="lg:grid lg:grid-cols-4 px-2 xsm:px-8 py-4 mt-[90px]">
+      <section className="lg:col-span-3 sm:mx-8 my-4 sm:p-4">
         <h2 className="heading text-xl text-left">
           {cartItems.length ? "Orders Summary" : "No Orders"}
         </h2>
@@ -97,16 +97,16 @@ function Cart() {
       <section className="flex flex-col justify-start my-4 p-4">
         <h2 className="heading text-xl">Orders Info</h2>
         <div className="flex flex-col justify-between">
-          <p className="my-2">Subtotal: {subtotal}</p>
-          <p className="my-2">Shipping Charges: {shippingCharges}</p>
-          <p className="my-2">Tax: {tax}</p>
+          <p className="my-2">Subtotal: <span className=" float-right">{subtotal}</span></p>
+          <p className="my-2">Shipping Charges: <span className=" float-right">{shippingCharges}</span></p>
+          <p className="my-2">Tax: <span className=" float-right">{tax}</span></p>
           <p className="my-2">
             Discount:{" "}
-            <span className="text-red-500">
+            <span className="text-red-500 float-right">
               {discount ? `-${discount}` : ``}
             </span>
           </p>
-          <p className="font-bold my-2">Total: {total}</p>
+          <p className="font-bold my-2">Total: <span className=" float-right">{total}</span></p>
         </div>
         <div className="flex flex-col my-2">
           <input

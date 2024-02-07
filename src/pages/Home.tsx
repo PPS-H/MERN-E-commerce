@@ -7,6 +7,7 @@ import { CartItem } from "../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, calculatePrice } from "../redux/reducer/cartReducer";
 import { CartReducerInitialState } from "../types/ReducerTypes";
+import bgImage from "../assets/bg-image1.png";
 
 function Home() {
   const dispatch = useDispatch();
@@ -39,19 +40,27 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className="mt-[90px]">
       {/* background image  */}
+      <div className="w-full h-[650px]">
+        <img
+          src={bgImage}
+          alt="bg-image"
+          className="w-full object-contain h-full"
+        />
+      </div>
+      <div></div>
       <section></section>
       {/* Products  */}
       <main className="m-4 px-4 py-2">
         <div className="flex items-center justify-between">
           <h1 className="heading text-2xl">Latest Products</h1>
-          <Link to="/products" className="text-lg">
+          <Link to="/products" className="text-lg hidden xsm:inline">
             More
           </Link>
         </div>
 
-        <div className="w-full flex justify-between items-center flex-wrap">
+        <div className="w-full flex justify-center xl:justify-between items-center flex-wrap">
           {isLoading ? (
             <Loader />
           ) : (
@@ -81,6 +90,7 @@ function Home() {
           )}
         </div>
       </main>
+      {/* <footer className="w-full bg-stone-50 text-center p-2 text-xl tracking-wider">All rights reserved @ 2024</footer> */}
     </div>
   );
 }
