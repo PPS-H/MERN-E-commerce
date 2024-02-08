@@ -31,7 +31,6 @@ function AllProducts() {
     search,
     page,
   });
-  console.log(allProducts?.totalPages);
   if (isError) toast.error("Couldn't find products");
   const handleNextPageChange = () => {
     if (allProducts?.totalPages && page < allProducts.totalPages) {
@@ -102,8 +101,8 @@ function AllProducts() {
               }}
             >
               <option value="">Select Category</option>
-              {data?.categories.map((value) => (
-                <option value={value}>
+              {data?.categories.map((value,index) => (
+                <option value={value} key={index}>
                   {value.charAt(0).toUpperCase() + value.slice(1)}
                 </option>
               ))}

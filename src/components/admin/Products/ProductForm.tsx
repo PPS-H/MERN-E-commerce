@@ -97,7 +97,7 @@ function ProductForm({
     }
   };
 
-  const handleUpdateProduct = async (e) => {
+  const handleUpdateProduct = async (e:FormEvent<HTMLElement>) => {
     e.preventDefault()
     const product = new FormData();
     console.log(values)
@@ -134,7 +134,7 @@ console.log(product);
 
   return (
     <form onSubmit={handleCreateProduct}>
-      <div className="flex justify-center flex-col min-w-[400px]">
+      <div className="flex justify-center flex-col w-full xsm:min-w-[400px] lg:min-w-min">
         <Input
           type="text"
           id="name"

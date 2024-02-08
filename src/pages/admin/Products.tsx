@@ -22,7 +22,6 @@ const columns: Column<ColumnsType>[] = [
   {
     Header: "Photo",
     accessor: "photo",
-    Cell: ({ value }) => <div style={{ width: "60px" }}>{value}</div>,
   },
   { Header: "Name", accessor: "name" },
   { Header: "Price", accessor: "price" },
@@ -36,18 +35,17 @@ function Products() {
     (state: { userReducer: UserReducerInitialState }) => state.userReducer
   );
   const { data, isError, isLoading } = useAllProductsQuery(user!._id);
-  console.log(data);
   if (isError) toast.error("Couldn't find products");
 
   useEffect(() => {
     if (data)
       setRows(
         data?.products.map((item) => ({
-          photo: <img src={`${server}/${item.photo}`} alt="product-image" className="w-[60px] h-[60px] object-fit" />,
+          photo: <img src={`${server}/${item.photo}`} alt="product-image" className="w-[60px] h-[60px] object-contain mx-auto" />,
           name: item.name,
           price: Number(item.price),
           stock: Number(item.stock),
-          action: <Link to={`/admin/product/${item._id}`} className="text-3xl"><CiEdit/></Link>,
+          action: <Link to={`/admin/product/${item._id}`} className="text-3xl"><CiEdit className="mx-auto"/></Link>,
         }))
       );
   }, [data]);
@@ -58,7 +56,7 @@ function Products() {
     "px-3 py-5 m-3",
     "Products",
     rows.length > 6,
-    true
+    rows.length > 6
   )();
 
   return (

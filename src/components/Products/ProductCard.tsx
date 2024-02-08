@@ -37,7 +37,7 @@ function ProductCard({
           className="w-[200px] h-[200px] object-contain"
         />
         <h5 className="text-xl text-center">{name}</h5>
-        <p className="font-bold text-center text-lg">${price}</p>
+        <p className="font-bold text-center text-lg">&#8377;{price}</p>
       </div>
     </div>
   );

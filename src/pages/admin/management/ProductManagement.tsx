@@ -8,16 +8,15 @@ import Loader from "../../../components/Loader";
 function ProductManagement() {
   const { id } = useParams();
   const { data, isError, isLoading } = useGetSingleProductQuery(id!);
-console.log(data);
 
   if (isError) toast.error("Unable to get product details");
 
   return isLoading ? (
     <Loader />
   ) : (
-    <div className="col-span-4 place-self-center">
-      <div className="flex">
-        <div className="bg-white rounded shadow px-5 py-8 min-h-[90vh] min-w-[400px] mx-3">
+    <div className="lg:col-span-4 lg:place-self-center">
+      <div className="xsm:flex xsm:justify-center xsm:items-center xsm:min-h-[100vh] w-full">
+        <div className="bg-white rounded shadow px-5 py-8 min-h-[90vh] min-w-[400px] mx-3 hidden lg:block">
           <div
             className={`text-${
               data!.product.stock > 0 ? "green" : "red"
@@ -38,7 +37,7 @@ console.log(data);
             </p>
           </div>
         </div>
-        <div className="bg-white rounded shadow p-5 min-h-[90vh] mx-3">
+        <div className="xsm:bg-white xsm:rounded xsm:shadow p-5 min-h-[90vh] mx-3">
           <h2 className="text-center font-bold text-3xl my-4">
             Manage Product
           </h2>

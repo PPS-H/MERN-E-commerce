@@ -19,12 +19,23 @@ function Shipping() {
   );
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setValues({ ...values!, [e.target.name]: e.target.value });
   };
 
   const proceedToPayment = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
+
+    if (
+      !values?.address ||
+      !values.state ||
+      !values.city ||
+      !values.country ||
+      !values.pinCode
+    )
+      return toast.error("Please fill all the fields to proceed");
     try {
       const { data } = await axios.post(
         `${server}/api/v1/payments/create?id=${user?._id!}`,
@@ -51,9 +62,9 @@ function Shipping() {
     }
   }, [cartItems]);
   return (
-    <div>
+    <div className="mt-[90px] relative">
       <div
-        className="text-white bg-black rounded-[100%] absolute p-3 top-5 left-5 text-lg"
+        className="text-white bg-black rounded-[100%] absolute p-3 top-0 left-5 text-lg hidden sm:block"
         onClick={() => {
           navigate("/cart");
         }}
@@ -61,8 +72,8 @@ function Shipping() {
         <IoArrowBackSharp />
       </div>
       <h2 className="heading text-2xl">Shipping Adderess</h2>
-      <form className="">
-        <div className="flex flex-col space-y-4 w-[24rem] justify-center mx-auto my-8">
+      <form className="mx-5">
+        <div className="flex flex-col space-y-4 sm:w-[24rem] justify-center mx-auto my-8">
           <Input
             type="text"
             id="address"

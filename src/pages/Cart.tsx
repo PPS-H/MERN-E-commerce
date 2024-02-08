@@ -103,7 +103,7 @@ function Cart() {
           <p className="my-2">
             Discount:{" "}
             <span className="text-red-500 float-right">
-              {discount ? `-${discount}` : ``}
+              {discount ? `-${discount}` : `0`}
             </span>
           </p>
           <p className="font-bold my-2">Total: <span className=" float-right">{total}</span></p>

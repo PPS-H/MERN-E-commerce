@@ -33,7 +33,7 @@ const initialState = {
 };
 const { lastSixMonths } = getMonths();
 function Dashboard() {
-  console.log("render");
+  let orders=[];
   const [dashboardStats, setDashboardStats] =
     useState<DashboardStats>(initialState);
   const { user } = useSelector((state: RootState) => state.userReducer);
