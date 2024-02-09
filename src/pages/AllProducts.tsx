@@ -124,7 +124,7 @@ function AllProducts() {
               }}
             />
           </div>
-          <div className="flex flex-wrap justify-center max-h-[80vh] ">
+          <div className="flex flex-wrap justify-evenly max-h-[80vh] ">
             {allProducts?.products.map((item) => {
               return (
                 <div key={String(item._id)} className="mx-4">

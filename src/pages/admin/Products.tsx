@@ -41,11 +41,21 @@ function Products() {
     if (data)
       setRows(
         data?.products.map((item) => ({
-          photo: <img src={`${server}/${item.photo}`} alt="product-image" className="w-[60px] h-[60px] object-contain mx-auto" />,
+          photo: (
+            <img
+              src={`${server}/${item.photo}`}
+              alt="product-image"
+              className="w-[60px] h-[60px] object-contain mx-auto"
+            />
+          ),
           name: item.name,
           price: Number(item.price),
           stock: Number(item.stock),
-          action: <Link to={`/admin/product/${item._id}`} className="text-3xl"><CiEdit className="mx-auto"/></Link>,
+          action: (
+            <Link to={`/admin/product/${item._id}`} className="text-3xl">
+              <CiEdit className="mx-auto" />
+            </Link>
+          ),
         }))
       );
   }, [data]);
@@ -59,10 +69,12 @@ function Products() {
     rows.length > 6
   )();
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 px-5 py-4 w-full">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white relative">
-        {isLoading ? <Loader /> : ProductsTable}
+        {ProductsTable}
         {/* <div className="absolute top-5 right-5 rounded-[100%] bg-black text-white py-1 px-3 text-2xl ">+</div> */}
         <Link
           className="absolute top-8 right-5 bg-black text-white rounded px-3 py-2 font-semibold"

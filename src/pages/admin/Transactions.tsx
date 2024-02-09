@@ -32,7 +32,6 @@ function Transactions() {
     (state: { userReducer: UserReducerInitialState }) => state.userReducer
   );
   const { data, isLoading, isError } = useAllOrdersQuery(user!._id);
-  console.log(data);
 
   if (isError) toast.error("Couldn't find orders");
 
@@ -72,10 +71,12 @@ function Transactions() {
     rows.length > 6,
     true
   )();
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 px-5 py-4">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white">
-        {isLoading ? <Loader /> : TransactionsTable}
+        {TransactionsTable}
       </div>
     </div>
   );

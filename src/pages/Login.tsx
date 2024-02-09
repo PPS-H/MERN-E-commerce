@@ -1,17 +1,19 @@
-import { useState } from "react";
-import Input from "../components/admin/Common/Input";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase";
-import { toast } from "react-hot-toast";
-import { getUser, useLoginMutation } from "../redux/api/userApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { MessageResponse, UserResponse } from "../types/ApiTypes";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaGoogle } from "react-icons/fa";
+import Input from "../components/admin/Common/Input";
+import { auth } from "../firebase";
+import { getUser, useLoginMutation } from "../redux/api/userApi";
+import { MessageResponse } from "../types/ApiTypes";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [gender, setGender] = useState<string>("");
   const [dob, setDOB] = useState<string>("");
   const [login] = useLoginMutation();
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
     try {
@@ -36,6 +38,7 @@ function Login() {
 
         if ("data" in res) {
           toast.success(res.data.message);
+          navigate("/");
         } else {
           const error = res.error as FetchBaseQueryError;
           const message = (error.data as MessageResponse).message;
@@ -50,8 +53,8 @@ function Login() {
   return (
     <>
       <div className=" h-[90vh] w-full">
-        <div className="flex justify-center items-center">
-          <div className="w-[30%] py-3 px-5">
+        <div className="flex justify-center items-center h-full">
+          <div className="w-[28rem] py-3 px-5">
             <h4 className="heading text-black text-3xl font-semibold">Login</h4>
             <div className="my-5">
               <div className=""></div>

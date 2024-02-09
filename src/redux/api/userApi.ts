@@ -44,7 +44,7 @@ export const { useLoginMutation,useGetAllUserQuery,useDeleteUserMutation } = use
 export const getUser = async (id: string) => {
   try {
     const { data }: { data: UserResponse } = await axios.get(
-      `${import.meta.env.VITE_BACKEND_SERVER}/api/v1/user/${id}?id=fugsewdhaiq`
+      `${import.meta.env.VITE_BACKEND_SERVER}/api/v1/user/${id}`
     );
     return data;
   } catch (error) {

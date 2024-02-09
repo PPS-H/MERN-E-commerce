@@ -8,6 +8,7 @@ import { useGetProductsStatsQuery } from "../../../redux/api/dashboardApi";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { ProductsStats } from "../../../types/ApiTypes";
+import Loader from "../../../components/Loader";
 
 const initialState = {
   Orders: {
@@ -57,9 +58,10 @@ function ProductsStats() {
       });
     }
   }, [data]);
-  console.log(data);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 overflow-y-scroll">
       <div className="bg-white col-span-3 xsm:rounded xsm:shadow px-8 py-7 m-6 space-y-6">
         <h1 className="text-center text-2xl font-semibold">
@@ -146,7 +148,11 @@ function ProductsStats() {
                 "Adult (20-40)",
                 "Older (above 40)",
               ]}
-              data={[productStats.userAgeGroups.teen, productStats.userAgeGroups.adult, productStats.userAgeGroups.old]}
+              data={[
+                productStats.userAgeGroups.teen,
+                productStats.userAgeGroups.adult,
+                productStats.userAgeGroups.old,
+              ]}
               backgroundColor={[
                 `hsl(10, ${80}%, 80%)`,
                 `hsl(10, ${80}%, 50%)`,
@@ -160,7 +166,10 @@ function ProductsStats() {
           <div>
             <DoughnutChart
               labels={["Admin", "Customers"]}
-              data={[productStats.userRoles.admin, productStats.userRoles.customer]}
+              data={[
+                productStats.userRoles.admin,
+                productStats.userRoles.customer,
+              ]}
               backgroundColor={[`hsl(335, 100%, 38%)`, "hsl(44, 98%, 50%)"]}
               offset={[0, 80]}
             />

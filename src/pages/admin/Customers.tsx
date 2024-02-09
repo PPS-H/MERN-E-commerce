@@ -33,7 +33,7 @@ const columns: Column<ColumnsType>[] = [
 function Customers() {
   const [rows, setRows] = useState<ColumnsType[]>([]);
   const { user } = useSelector((state: RootState) => state.userReducer);
-  const { data, isError, isLoading,refetch } = useGetAllUserQuery(user!._id);
+  const { data, isError, isLoading, refetch } = useGetAllUserQuery(user!._id);
   if (isError) return toast.error("Unable to fetch user accounts");
 
   const [deleteUser] = useDeleteUserMutation();
@@ -89,10 +89,12 @@ function Customers() {
     rows.length > 6,
     true
   )();
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 px-5 py-4">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white">
-        {isLoading ? <Loader  /> : CustomersTable}
+        {CustomersTable}
       </div>
     </div>
   );
