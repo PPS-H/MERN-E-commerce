@@ -19,14 +19,14 @@ function CartItemCard({
   removeHandler
 }: CartItemProps) {
   return (
-    <div className="flex items-center text-lg justify-between" key={key}>
-      <div className="flex flex-col justify-center items-start w-[180px]">
+    <div className="flex items-center sm:text-lg justify-between text:xs xsm:text-md" key={key}>
+      <div className="flex flex-col justify-center items-start">
         <img
           src={`${server}/${product.photo}`}
           alt="product-image"
-          className="w-[100px] h-[100px]"
+          className="w-[100px] h-[100px] object-contain mx-auto"
         />
-        <p>{product.name}</p>
+        <p className=" w-[100px] sm:w-[180px] mx-auto text-center">{product.name}</p>
       </div>
       <div className="flex items-start">
         <p>

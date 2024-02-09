@@ -85,7 +85,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h1 className="text-center text-4xl my-5">Pay to Proceed </h1>
-      <div className="w-[30%] mx-auto">
+      <div className="sm:w-[24rem] sm:mx-auto mx-5">
         <PaymentElement className="" />
         <button
           type="submit"

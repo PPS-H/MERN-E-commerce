@@ -22,7 +22,6 @@ const columns: Column<ColumnsType>[] = [
   {
     Header: "Photo",
     accessor: "photo",
-    Cell: ({ value }) => <div style={{ width: "60px" }}>{value}</div>,
   },
   { Header: "Name", accessor: "name" },
   { Header: "Price", accessor: "price" },
@@ -36,18 +35,27 @@ function Products() {
     (state: { userReducer: UserReducerInitialState }) => state.userReducer
   );
   const { data, isError, isLoading } = useAllProductsQuery(user!._id);
-  console.log(data);
   if (isError) toast.error("Couldn't find products");
 
   useEffect(() => {
     if (data)
       setRows(
         data?.products.map((item) => ({
-          photo: <img src={`${server}/${item.photo}`} alt="product-image" className="w-[60px] h-[60px] object-fit" />,
+          photo: (
+            <img
+              src={`${server}/${item.photo}`}
+              alt="product-image"
+              className="w-[60px] h-[60px] object-contain mx-auto"
+            />
+          ),
           name: item.name,
           price: Number(item.price),
           stock: Number(item.stock),
-          action: <Link to={`/admin/product/${item._id}`} className="text-3xl"><CiEdit/></Link>,
+          action: (
+            <Link to={`/admin/product/${item._id}`} className="text-3xl">
+              <CiEdit className="mx-auto" />
+            </Link>
+          ),
         }))
       );
   }, [data]);
@@ -58,13 +66,15 @@ function Products() {
     "px-3 py-5 m-3",
     "Products",
     rows.length > 6,
-    true
+    rows.length > 6
   )();
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 px-5 py-4 w-full">
       <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white relative">
-        {isLoading ? <Loader /> : ProductsTable}
+        {ProductsTable}
         {/* <div className="absolute top-5 right-5 rounded-[100%] bg-black text-white py-1 px-3 text-2xl ">+</div> */}
         <Link
           className="absolute top-8 right-5 bg-black text-white rounded px-3 py-2 font-semibold"

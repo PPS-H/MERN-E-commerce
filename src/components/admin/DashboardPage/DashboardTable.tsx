@@ -1,11 +1,14 @@
 import { Column } from "react-table";
 import Table from "../Common/Table";
+import { ReactElement, useEffect, useState } from "react";
+import { server } from "../../../redux/store";
+import { latestTransactions } from "../../../types/ApiTypes";
 
 interface ColumnsType {
-  _id: string;
-  quantity: number;
-  discount: number;
+  name: string;
+  photo: ReactElement;
   amount: number;
+  quantity: number;
   status: string;
 }
 /**
@@ -13,15 +16,41 @@ interface ColumnsType {
  * accessor is just a umique id of each header
  */
 const columns: Column<ColumnsType>[] = [
-  { Header: "Id", accessor: "_id" },
-  { Header: "Quanitty", accessor: "quantity" },
-  { Header: "Discount", accessor: "discount" },
+  { Header: "Photo", accessor: "photo" },
+  { Header: "Name", accessor: "name" },
   { Header: "Amount", accessor: "amount" },
+  { Header: "Quantity", accessor: "quantity" },
   { Header: "Status", accessor: "status" },
 ];
 
-function DashboardTable({ data }: { data: ColumnsType[] }) {
-  return Table<ColumnsType>(columns, data, "px-3 py-5 m-3", "Latest Transaction")();
+function DashboardTable({ data }: { data: latestTransactions[] }) {
+
+  const [rows, setRows] = useState<ColumnsType[]>([]);
+  useEffect(() => {
+    if (data) {
+      setRows(
+        data.map((i) => ({
+          name: i.name,
+          photo: (
+            <img
+              src={`${server}/${i.photo}`}
+              className="w-[50px] h-[50px]"
+            ></img>
+          ),
+          amount: i.amount,
+          quantity: i.quantity,
+          status: i.status,
+        }))
+      );
+    }
+  }, [data]);
+
+  return Table<ColumnsType>(
+    columns,
+    rows,
+    "px-3 py-5 m-3",
+    "Latest Transaction"
+  )();
 }
 
 export default DashboardTable;

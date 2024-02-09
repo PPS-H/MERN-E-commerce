@@ -3,7 +3,7 @@ import { OrderItem } from "../types/types";
 
 function OrderedProductCard({ photo, name, price, quantity }: OrderItem) {
   return (
-    <>
+    <div className="flex justify-between items-center w-full">
       <div>
         <img
           src={`${server}/${photo}`}
@@ -15,7 +15,7 @@ function OrderedProductCard({ photo, name, price, quantity }: OrderItem) {
       <div>
         {price} * {quantity} = {price * quantity}
       </div>
-    </>
+    </div>
   );
 }
 

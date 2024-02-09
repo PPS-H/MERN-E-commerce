@@ -113,8 +113,8 @@ export interface UpdateOrder {
 }
 
 export interface latestTransactions {
-  _id: string;
-  discount: number;
+  name: string;
+  photo: string;
   amount: number;
   quantity: number;
   status: string;

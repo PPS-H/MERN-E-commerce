@@ -31,7 +31,6 @@ function AllProducts() {
     search,
     page,
   });
-  console.log(allProducts?.totalPages);
   if (isError) toast.error("Couldn't find products");
   const handleNextPageChange = () => {
     if (allProducts?.totalPages && page < allProducts.totalPages) {
@@ -52,10 +51,10 @@ function AllProducts() {
   };
 
   return (
-    <div className="grid grid-cols-4">
+    <div className="lg:grid lg:grid-cols-4 mt-[90px]">
       <section className="p-4 mx-6 text-lg">
         <h2 className="heading text-left text-xl">Filters</h2>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col sm:flex-row lg:flex-col justify-between lg:items-stretch sm:items-center lg:space-y-4 text-base sm:text-lg">
           <div>
             <label htmlFor="sort" className="block">
               Sort:
@@ -102,8 +101,8 @@ function AllProducts() {
               }}
             >
               <option value="">Select Category</option>
-              {data?.categories.map((value) => (
-                <option value={value}>
+              {data?.categories.map((value,index) => (
+                <option value={value} key={index}>
                   {value.charAt(0).toUpperCase() + value.slice(1)}
                 </option>
               ))}
@@ -112,9 +111,9 @@ function AllProducts() {
         </div>
       </section>
       {productsLoading ? (
-        <Loader  />
+        <Loader />
       ) : (
-        <section className="col-span-3">
+        <section className="lg:col-span-3">
           <div className="px-4">
             <input
               type="text"
@@ -125,10 +124,10 @@ function AllProducts() {
               }}
             />
           </div>
-          <div className="flex flex-wrap justify-around max-h-[80vh]">
+          <div className="flex flex-wrap justify-evenly max-h-[80vh] ">
             {allProducts?.products.map((item) => {
               return (
-                <div key={String(item._id)}>
+                <div key={String(item._id)} className="mx-4">
                   <ProductCard
                     name={item.name}
                     price={item.price}

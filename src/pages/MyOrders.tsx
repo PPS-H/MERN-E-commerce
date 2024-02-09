@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Column } from "react-table";
-import { RootState } from "../redux/store";
+import { RootState, server } from "../redux/store";
 import { useMyOrdersQuery } from "../redux/api/orderApi";
 import toast from "react-hot-toast";
 import { CustomError } from "../types/types";
@@ -9,7 +9,7 @@ import Table from "../components/admin/Common/Table";
 import Loader from "../components/Loader";
 
 interface ColumnsType {
-  _id: string;
+  photo: ReactElement;
   amount: number;
   quantity: number;
   discount: number;
@@ -18,8 +18,8 @@ interface ColumnsType {
 
 const columns: Column<ColumnsType>[] = [
   {
-    Header: "ID",
-    accessor: "_id",
+    Header: "Image",
+    accessor: "photo",
   },
   {
     Header: "Quantity",
@@ -40,6 +40,7 @@ const columns: Column<ColumnsType>[] = [
 ];
 
 function MyOrders() {
+  let orders:ColumnsType[] = [];
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   const { isLoading, data, isError, error } = useMyOrdersQuery(user?._id!);
@@ -51,29 +52,77 @@ function MyOrders() {
 
     toast.error(err.data.message);
   }
+
   useEffect(() => {
     if (data)
-      setRows(
-        data.orders.map((i) => ({
-          _id: i._id,
-          amount: i.total,
-          discount: i.discount,
-          quantity: i.orderItems.length,
-          status: (
-            <span
-              className={
-                i.status === "Processing"
-                  ? "text-red-500"
-                  : i.status === "Shipped"
-                  ? "text-green-500"
-                  : "text-purple-500"
-              }
-            >
-              {i.status}
-            </span>
-          ),
-        }))
-      );
+      data?.orders.forEach((i) => {
+        if (i.orderItems.length > 1) {
+          i.orderItems.forEach((item) => {
+            orders.push({
+              photo: <img src={`${server}/${item.photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
+              amount: Math.round(item.price + item.price * 0.18),
+              discount: i.discount,
+              quantity: item.quantity,
+              status: (
+                <span
+                  className={
+                    i.status === "Processing"
+                      ? "text-red-500"
+                      : i.status === "Shipped"
+                      ? "text-green-500"
+                      : "text-purple-500"
+                  }
+                >
+                  {i.status}
+                </span>
+              ),
+            });
+          });
+        } else {
+          orders.push({
+            photo: <img src={`${server}/${i.orderItems[0].photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
+            amount: i.total,
+            discount: i.discount,
+            quantity: i.orderItems[0].quantity,
+            status: (
+              <span
+                className={
+                  i.status === "Processing"
+                    ? "text-red-500"
+                    : i.status === "Shipped"
+                    ? "text-green-500"
+                    : "text-purple-500"
+                }
+              >
+                {i.status}
+              </span>
+            ),
+          });
+        }
+      });
+    // setRows(
+    //   data!.orders.map((i) => ({
+    //     _id: i._id,
+    //     amount: i.subtotal + i.tax,
+    //     discount: i.discount,
+    //     quantity: i.orderItems.length,
+    //     status: (
+    //       <span
+    //         className={
+    //           i.status === "Processing"
+    //             ? "text-red-500"
+    //             : i.status === "Shipped"
+    //             ? "text-green-500"
+    //             : "text-purple-500"
+    //         }
+    //       >
+    //         {i.status}
+    //       </span>
+    //     ),
+    //   }))
+    // );
+
+    setRows(orders)
   }, [data]);
 
   const OrdersTable = Table<ColumnsType>(
@@ -82,12 +131,12 @@ function MyOrders() {
     "px-3 py-5 m-3",
     "My orders",
     rows.length > 6,
-    true
+    rows.length > 6
   )();
 
   return (
-    <div className="lg:col-span-4 px-5 py-4 w-full">
-      <div className="mx-3 xsm:rounded xsm:shadow xsm:bg-white relative">
+    <div className="lg:col-span-4 px-5 py-4 w-full mt-[90px]">
+      <div className="mx-3 relative">
         {isLoading ? <Loader /> : OrdersTable}
         {/* <div className="absolute top-5 right-5 rounded-[100%] bg-black text-white py-1 px-3 text-2xl ">+</div> */}
       </div>
