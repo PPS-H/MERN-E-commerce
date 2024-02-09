@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { OrdersType } from "../../../types/types";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import OrderedProductCard from "../../../components/OrderedProductCard";
+import { responseToast } from "../../../components/utils/features";
 import {
   useDeleteOrderMutation,
   useGetOrderDetailsQuery,
   useUpdateOrderMutation,
 } from "../../../redux/api/orderApi";
-import { useNavigate, useParams } from "react-router-dom";
-import { server } from "../../../redux/store";
 import { UserReducerInitialState } from "../../../types/ReducerTypes";
-import { useSelector } from "react-redux";
-import { responseToast } from "../../../components/utils/features";
-import OrderedProductCard from "../../../components/OrderedProductCard";
+import { OrdersType } from "../../../types/types";
+import Loader from "../../../components/Loader";
 
 export type OrderItemType = {
   name: string;
@@ -37,19 +37,6 @@ export type OrderType = {
   orderItems: OrderItemType[];
   _id: string;
 };
-
-const img =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
-
-const orderItems: OrderItemType[] = [
-  {
-    name: "Puma Shoes",
-    photo: img,
-    _id: "asdsaasdas",
-    quantity: 4,
-    price: 2000,
-  },
-];
 
 function TransactionManagement() {
   const defaultData: OrdersType = {
@@ -137,7 +124,9 @@ function TransactionManagement() {
     user: { name },
   } = order || defaultData;
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="lg:col-span-4 lg:place-self-center">
       <div className="flex justify-center lg:flex-row flex-col">
         <div className="bg-white lg:rounded lg:shadow xsm:px-5 px-2 py-8 lg:min-h-[90vh] lg:min-w-[400px] lg:mx-3">

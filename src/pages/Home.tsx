@@ -1,13 +1,13 @@
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import bgImage from "../assets/bg-image1.png";
+import Loader from "../components/Loader";
 import ProductCard from "../components/Products/ProductCard";
 import { useLatestProductsQuery } from "../redux/api/productApi";
-import Loader from "../components/Loader";
-import toast from "react-hot-toast";
-import { CartItem } from "../types/types";
-import { useDispatch, useSelector } from "react-redux";
 import { addToCart, calculatePrice } from "../redux/reducer/cartReducer";
 import { CartReducerInitialState } from "../types/ReducerTypes";
-import bgImage from "../assets/bg-image1.png";
+import { CartItem } from "../types/types";
 
 function Home() {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ function Home() {
     }
 
     if (result) {
-      toast((t) => (
+      toast(() => (
         <span>
           <strong>Already added to the cart!</strong>
         </span>

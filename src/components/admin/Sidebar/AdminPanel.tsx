@@ -1,18 +1,19 @@
-import { Link } from "react-router-dom";
-import { MdDashboard, MdShoppingCart, MdOutlinePayment } from "react-icons/md";
-import { FaUsersGear } from "react-icons/fa6";
-import { IconType } from "react-icons";
-import { IoBarChartSharp } from "react-icons/io5";
-import { FaChartPie } from "react-icons/fa";
-import { BsGraphUp } from "react-icons/bs";
-import { RiCouponLine } from "react-icons/ri";
-import { HiMenuAlt4 } from "react-icons/hi";
 import { useState } from "react";
+import { IconType } from "react-icons";
+import { BsGraphUp } from "react-icons/bs";
+import { FaChartPie } from "react-icons/fa";
+import { FaUsersGear } from "react-icons/fa6";
+import { HiMenuAlt4 } from "react-icons/hi";
+import { IoBarChartSharp } from "react-icons/io5";
+import { MdDashboard, MdOutlinePayment, MdShoppingCart } from "react-icons/md";
+import { RiCouponLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 function AdminPanel() {
-  const [phoneActive, setPhoneActive] = useState<boolean>(
-    window.innerWidth < 1024
-  );
+  // const [phoneActive, setPhoneActive] = useState<boolean>(
+  //   window.innerWidth < 1024
+  // );
+  const phoneActive=window.innerWidth < 1024
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const handleClick = () => {
     setShowMenu(!showMenu);

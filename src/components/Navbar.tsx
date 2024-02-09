@@ -1,27 +1,15 @@
-import { Link } from "react-router-dom";
-import { User } from "../types/types";
-import { MdLogin, MdLogout } from "react-icons/md";
-import { ReactElement, useState } from "react";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { ReactElement } from "react";
 import toast from "react-hot-toast";
 import { IoMdCart } from "react-icons/io";
-import { CartReducerInitialState } from "../types/ReducerTypes";
+import { MdLogin, MdLogout } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { HiMenuAlt4 } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import { auth } from "../firebase";
+import { CartReducerInitialState } from "../types/ReducerTypes";
+import { User } from "../types/types";
 
 function Navbar({ user }: { user: User | null }) {
-  const [phoneActive, setPhoneActive] = useState<boolean>(
-    window.innerWidth < 1024
-  );
-  const [showMenu, setShowMenu] = useState<boolean>(false);
-  const handleClick = () => {
-    setShowMenu(!showMenu);
-  };
-
-  const checkMobileMenu = () => {
-    if (phoneActive) setShowMenu(!showMenu);
-  };
 
   const { cartItems } = useSelector(
     (state: { cartReducer: CartReducerInitialState }) => state.cartReducer

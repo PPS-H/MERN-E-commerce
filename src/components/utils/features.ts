@@ -1,9 +1,9 @@
-import { MessageResponse } from "../../types/ApiTypes";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import moment from "moment";
 import toast from "react-hot-toast";
 import { NavigateFunction } from "react-router-dom";
-import moment from "moment";
+import { MessageResponse } from "../../types/ApiTypes";
 
 type ResponseType =
   | {
@@ -31,7 +31,7 @@ export const responseToast = (
 export const getMonths = () => {
   let lastSixMonths: string[] = [];
   let lastTwelveMonths: string[] = [];
-  const date = moment();
+  //const date = moment();
 
   for (let index = 0; index < 6; index++) {
     lastSixMonths.unshift(moment().subtract(index, "months").format("MMMM"));

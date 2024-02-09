@@ -1,16 +1,16 @@
-import { FormEvent, useEffect, useState } from "react";
-import Input from "../Common/Input";
+import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   useAddNewProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,
 } from "../../../redux/api/productApi";
-import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { server } from "../../../redux/store";
 import { UserReducerInitialState } from "../../../types/ReducerTypes";
 import { responseToast } from "../../utils/features";
-import { useNavigate } from "react-router-dom";
-import { server } from "../../../redux/store";
+import Input from "../Common/Input";
 
 interface ProductProps {
   name?: string;
@@ -77,36 +77,31 @@ function ProductForm({
   };
   const handleCreateProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("enter");
     let formData = new FormData();
     formData.append("name", values.name!);
     formData.append("price", String(values.price!));
     formData.append("stock", String(values.stock!));
     formData.append("category", values.category!);
     formData.append("photo", values.file!);
-    console.log(values.file);
     try {
       const res = await addNewProuduct({
         id: user!._id,
         formData,
       });
-      console.log(res);
       responseToast(res, navigate, "/admin/products");
     } catch (error) {
       toast.error("Couldn't add a product");
     }
   };
 
-  const handleUpdateProduct = async (e:FormEvent<HTMLElement>) => {
-    e.preventDefault()
+  const handleUpdateProduct = async (e: FormEvent<HTMLElement>) => {
+    e.preventDefault();
     const product = new FormData();
-    console.log(values)
     if (values.name) product.append("name", values.name);
-     product.append("price", String(values.price));
-     product.append("stock", String(values.stock));
+    product.append("price", String(values.price));
+    product.append("stock", String(values.stock));
     if (values.category) product.append("category", values.category);
     if (values.file) product.append("photo", values.file);
-console.log(product);
 
     try {
       const res = await updateProduct({
