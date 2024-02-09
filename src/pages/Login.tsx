@@ -38,7 +38,7 @@ function Login() {
 
         if ("data" in res) {
           toast.success(res.data.message);
-          navigate("/");
+          return navigate("/");
         } else {
           const error = res.error as FetchBaseQueryError;
           const message = (error.data as MessageResponse).message;
