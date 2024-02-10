@@ -33,7 +33,7 @@ const columns: Column<ColumnsType>[] = [
 function Customers() {
   const [rows, setRows] = useState<ColumnsType[]>([]);
   const { user } = useSelector((state: RootState) => state.userReducer);
-  const { data, isError, isLoading, refetch } = useGetAllUserQuery(user!._id);
+  const { data, isError, isLoading } = useGetAllUserQuery(user!._id);
   if (isError) return toast.error("Unable to fetch user accounts");
 
   const [deleteUser] = useDeleteUserMutation();

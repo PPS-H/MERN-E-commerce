@@ -1,12 +1,12 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
-import { Column } from "react-table";
-import Table from "../../components/admin/Common/Table";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "../../types/ReducerTypes";
-import { useAllOrdersQuery } from "../../redux/api/orderApi";
+import { ReactElement, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Column } from "react-table";
 import Loader from "../../components/Loader";
+import Table from "../../components/admin/Common/Table";
+import { useAllOrdersQuery } from "../../redux/api/orderApi";
+import { UserReducerInitialState } from "../../types/ReducerTypes";
 
 interface ColumnsType {
   user: string;

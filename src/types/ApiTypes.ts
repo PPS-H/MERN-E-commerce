@@ -1,11 +1,10 @@
 import {
   CartItem,
-  OrderItem,
-  OrdersType,
   ChangeInStats,
-  ShippingInfo,
-  User,
+  OrdersType,
   RevenueDistribution,
+  ShippingInfo,
+  User
 } from "./types";
 
 export type MessageResponse = {

@@ -1,6 +1,5 @@
-import { FaPlus } from "react-icons/fa";
-import { server } from "../../redux/store";
 import { IoMdCart } from "react-icons/io";
+import { server } from "../../redux/store";
 
 interface productProps {
   name: string;
@@ -14,8 +13,6 @@ function ProductCard({
   name,
   image,
   price,
-  id,
-  stock,
   handleClick,
 }: productProps) {
   return (

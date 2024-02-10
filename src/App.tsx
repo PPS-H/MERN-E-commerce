@@ -1,18 +1,18 @@
 import { Suspense, lazy, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./index.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-import AdminPanel from "./components/admin/Sidebar/AdminPanel";
-import Navbar from "./components/Navbar";
-import { Toaster } from "react-hot-toast";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { userExist, userNotExist } from "./redux/reducer/userReduces";
-import { getUser } from "./redux/api/userApi";
-import { UserReducerInitialState } from "./types/ReducerTypes";
 import Loader from "./components/Loader";
+import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPanel from "./components/admin/Sidebar/AdminPanel";
+import { auth } from "./firebase";
+import { getUser } from "./redux/api/userApi";
+import { userExist, userNotExist } from "./redux/reducer/userReduces";
+import { UserReducerInitialState } from "./types/ReducerTypes";
 
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Transactions = lazy(() => import("./pages/admin/Transactions"));

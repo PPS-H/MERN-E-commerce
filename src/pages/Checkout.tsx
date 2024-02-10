@@ -75,7 +75,6 @@ const CheckoutForm = () => {
       return toast.error(error.message || "Something went wrong");
     }
     if (paymentIntent.status === "succeeded") {
-      console.log("Placing order");
       const res=await newOrder(orderData)
       dispatch(resetCart())
       responseToast(res,navigate,"/myorders");
