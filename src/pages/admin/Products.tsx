@@ -66,7 +66,7 @@ function Products() {
     "px-3 py-5 m-3",
     "Products",
     rows.length > 6,
-    rows.length > 6
+    true
   )();
 
   return isLoading ? (
