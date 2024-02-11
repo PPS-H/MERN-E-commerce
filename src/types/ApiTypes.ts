@@ -4,7 +4,7 @@ import {
   OrdersType,
   RevenueDistribution,
   ShippingInfo,
-  User
+  User,
 } from "./types";
 
 export type MessageResponse = {
@@ -29,7 +29,10 @@ export interface ProductType {
   _id: string;
   name: string;
   stock: number;
-  photo: string;
+  photo: {
+    public_id:string,
+    url:string
+  };
   category: string;
   price: number;
 }
@@ -186,4 +189,9 @@ export interface YearlyReport {
 export interface YearlyReportResponse {
   success: boolean;
   yearlyReports: YearlyReport;
+}
+
+export interface GenerateCouponCode {
+  coupon: string;
+  amount: number;
 }

@@ -56,11 +56,15 @@ function Shipping() {
   };
 
   useEffect(() => {
+    if (!user) {
+      toast.error("Please login first!");
+      return navigate("/login");
+    }
     if (cartItems.length <= 0) {
       toast.error("Cart is empty");
       return navigate("/cart");
     }
-  }, [cartItems]);
+  }, [cartItems, user]);
   return (
     <div className="mt-[90px] relative">
       <div

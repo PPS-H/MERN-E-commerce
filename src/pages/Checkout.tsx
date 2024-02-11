@@ -5,7 +5,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
@@ -75,9 +75,9 @@ const CheckoutForm = () => {
       return toast.error(error.message || "Something went wrong");
     }
     if (paymentIntent.status === "succeeded") {
-      const res=await newOrder(orderData)
-      dispatch(resetCart())
-      responseToast(res,navigate,"/myorders");
+      const res = await newOrder(orderData);
+      dispatch(resetCart());
+      responseToast(res, navigate, "/myorders");
     }
     setIsProcessing(false);
   };
@@ -99,11 +99,19 @@ const CheckoutForm = () => {
 };
 function Checkout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const clientSecret: string | undefined = location.state;
   if (!clientSecret) return <Navigate to={"/shipping"} />;
   const options = {
     clientSecret,
   };
+  const { user } = useSelector((state: RootState) => state.userReducer);
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login first!");
+      return navigate("/login");
+    }
+  }, [user]);
 
   return (
     <Elements stripe={stripePromise} options={options}>

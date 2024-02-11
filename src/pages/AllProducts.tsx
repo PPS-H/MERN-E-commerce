@@ -132,14 +132,14 @@ function AllProducts() {
                     name={item.name}
                     price={item.price}
                     stock={item.stock}
-                    image={item.photo}
+                    image={item.photo.url}
                     id={String(item._id)}
                     handleClick={() => {
                       handleAddToCart({
                         productId: item._id,
                         name: item.name,
                         price: item.price,
-                        photo: item.photo,
+                        photo: item.photo.url,
                         quantity: 1,
                         stock: item.stock,
                       });

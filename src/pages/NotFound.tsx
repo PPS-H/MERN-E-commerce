@@ -1,10 +1,13 @@
-import { MdError } from "react-icons/md";
+import Image404 from "../assets/404.png";
 
 function NotFound() {
   return (
-    <div className="text-center text-6xl mx-auto h-[50vh] flex flex-col justify-center">
-      <MdError className="text-4xl mx-auto" size={80} />
-      <h1>Page Not Found</h1>
+    <div className="text-center mt-[90px] mx-auto flex flex-col justify-center">
+      <img
+        src={Image404}
+        alt="404-not-found"
+        className="object-contain h-[550px]"
+      />
     </div>
   );
 }

@@ -1,14 +1,13 @@
 import { ReactElement, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { CiEdit } from "react-icons/ci";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
+import Loader from "../../components/Loader";
 import Table from "../../components/admin/Common/Table";
 import { useAllProductsQuery } from "../../redux/api/productApi";
-import toast from "react-hot-toast";
-import { server } from "../../redux/store";
-import Loader from "../../components/Loader";
-import { useSelector } from "react-redux";
 import { UserReducerInitialState } from "../../types/ReducerTypes";
-import { CiEdit } from "react-icons/ci";
 
 interface ColumnsType {
   photo: ReactElement;
@@ -43,7 +42,7 @@ function Products() {
         data?.products.map((item) => ({
           photo: (
             <img
-              src={`${server}/${item.photo}`}
+              src={`${item.photo.url}`}
               alt="product-image"
               className="w-[60px] h-[60px] object-contain mx-auto"
             />

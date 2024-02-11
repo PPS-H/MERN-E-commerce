@@ -1,5 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
 import { MdContentCopy } from "react-icons/md";
+import { RootState, server } from "../../redux/store";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 function Coupons() {
   const [size, setSize] = useState<number>(8);
@@ -8,7 +12,9 @@ function Coupons() {
   const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
   const [includeCharacters, setIncludeCharacters] = useState<boolean>(false);
   const [coupon, setCoupon] = useState<string>("");
-  const [copyMsg, setCopyMsg] = useState<string>("");
+  const [amount, setAmount] = useState<number>(0);
+
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const generateCoupon = () => {
     const numbers = "1234567890";
@@ -16,10 +22,10 @@ function Coupons() {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     if (!includeNumbers && !includeCharacters && !includeSymbols)
-      return alert("Please select at least one option");
+      return toast.error("Please select at least one option");
 
     if (prefix.length > size)
-      return alert(
+      return toast.error(
         "Please increase length to add some charcters to your coupon prefix."
       );
 
@@ -39,7 +45,28 @@ function Coupons() {
   };
   const handleCopyClick = () => {
     navigator.clipboard.writeText(coupon);
-    setCopyMsg("Copied!!");
+    toast.success("Copied!!");
+  };
+
+  const createCouponCode = async () => {
+    try {
+      const res = await axios.post(
+        `${server}/api/v1/payments/coupon/new?id=${user?._id}`,
+        {
+          coupon: coupon,
+          amount: amount,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      toast.success(res.data.message);
+    } catch (error: any) {
+      console.log(error.response.data);
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div className="lg:col-span-4 overflow-y-scroll">
@@ -103,7 +130,28 @@ function Coupons() {
                 </div>
               </div>
             )}
-            <div className="text-center text-green-500">{copyMsg}</div>
+
+            {coupon ? (
+              <div className="space-y-2">
+                <label htmlFor="amount">Enter amount:</label>
+                <input
+                  type="number"
+                  placeholder="Enter amount"
+                  name="amount"
+                  id="amount"
+                  className="border p-2 rounded w-full"
+                  value={amount}
+                  onChange={(e) => {
+                    setAmount(Number(e.target.value));
+                  }}
+                />
+                <button className="btn-primary" onClick={createCouponCode}>
+                  Create coupon code
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

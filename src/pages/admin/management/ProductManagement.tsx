@@ -1,9 +1,8 @@
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import Loader from "../../../components/Loader";
 import ProductForm from "../../../components/admin/Products/ProductForm";
 import { useGetSingleProductQuery } from "../../../redux/api/productApi";
-import toast from "react-hot-toast";
-import { server } from "../../../redux/store";
-import Loader from "../../../components/Loader";
 
 function ProductManagement() {
   const { id } = useParams();
@@ -26,7 +25,7 @@ function ProductManagement() {
           </div>
           <p className="heading">Top -{data!.product.category}</p>
           <img
-            src={`${server}/${data?.product.photo}`}
+            src={`${data?.product.photo.url}`}
             alt="product-image"
             className="max-w-[400px] h-[400px] my-5 object-contain"
           />

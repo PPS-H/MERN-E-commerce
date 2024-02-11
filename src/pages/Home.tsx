@@ -54,13 +54,23 @@ function Home() {
       {/* Products  */}
       <main className="m-4 px-4 py-2">
         <div className="flex items-center justify-between">
-          <h1 className="heading text-2xl">Latest Products</h1>
-          <Link to="/products" className="text-lg hidden xsm:inline">
-            More
-          </Link>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <h1 className="heading text-2xl">Latest Products</h1>
+              <Link to="/products" className="text-lg hidden xsm:inline">
+                More
+              </Link>
+            </>
+          )}
         </div>
 
-        <div className="w-full flex justify-center xl:justify-between items-center flex-wrap">
+        <div
+          className={`w-full flex justify-center ${
+            !isLoading && data!.products.length > 3 ? "xl:justify-between" : ""
+          } items-center flex-wrap`}
+        >
           {isLoading ? (
             <Loader />
           ) : (
@@ -71,14 +81,14 @@ function Home() {
                     name={item.name}
                     price={item.price}
                     stock={item.stock}
-                    image={item.photo}
+                    image={item.photo.url}
                     id={String(item._id)}
                     handleClick={() => {
                       handleAddToCart({
                         productId: item._id,
                         name: item.name,
                         price: item.price,
-                        photo: item.photo,
+                        photo: item.photo.url,
                         quantity: 1,
                         stock: item.stock,
                       });
