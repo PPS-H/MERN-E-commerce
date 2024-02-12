@@ -1,18 +1,18 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { CartReducerInitialState } from "../types/ReducerTypes";
+import { useNavigate } from "react-router-dom";
+import CartItemCard from "../components/CartItemCard";
 import {
   addToCart,
   applyDiscount,
   calculatePrice,
   removeFromCart,
 } from "../redux/reducer/cartReducer";
-import { CartItem } from "../types/types";
-import CartItemCard from "../components/CartItemCard";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { RootState, server } from "../redux/store";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { CartReducerInitialState } from "../types/ReducerTypes";
+import { CartItem } from "../types/types";
 
 function Cart() {
   const navigate = useNavigate();
@@ -70,9 +70,8 @@ function Cart() {
             dispatch(calculatePrice());
           })
           .catch((e) => {
+            console.log(e)
             setIsValidCouponCode(false);
-            console.log(isValidCouponCode);
-
             dispatch(applyDiscount(0));
             dispatch(calculatePrice());
           });

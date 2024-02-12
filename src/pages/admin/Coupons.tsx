@@ -62,7 +62,7 @@ function Coupons() {
           },
         }
       );
-      toast.success("Coupon code created succesfully");
+      toast.success(res.data.message);
     } catch (error: any) {
       console.log(error.response.data);
       toast.error(error.response.data.message);

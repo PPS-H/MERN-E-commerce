@@ -1,5 +1,4 @@
 import { IoMdCart } from "react-icons/io";
-import { server } from "../../redux/store";
 
 interface productProps {
   name: string;

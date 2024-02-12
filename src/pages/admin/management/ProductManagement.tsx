@@ -1,9 +1,8 @@
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import Loader from "../../../components/Loader";
 import ProductForm from "../../../components/admin/Products/ProductForm";
 import { useGetSingleProductQuery } from "../../../redux/api/productApi";
-import toast from "react-hot-toast";
-import { server } from "../../../redux/store";
-import Loader from "../../../components/Loader";
 
 function ProductManagement() {
   const { id } = useParams();
