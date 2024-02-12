@@ -42,7 +42,12 @@ function AdminPanel() {
             : "hidden left-96"
         } lg:block bg-white px-5 py-4`}
       >
-        <h1 className="text-2xl font-bold">Logo.</h1>
+        {/* <h1 className="text-2xl font-bold">Logo.</h1> */}
+        <img
+          src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+          alt="logo"
+          className="my-2"
+        />
         <div className="xl:px-4 lg:px-2  py-6">
           <div>
             <h5 className="uppercase tracking-widest">DASHBOARD</h5>

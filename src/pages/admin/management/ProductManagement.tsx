@@ -26,7 +26,7 @@ function ProductManagement() {
           </div>
           <p className="heading">Top -{data!.product.category}</p>
           <img
-            src={`${server}/${data?.product.photo}`}
+            src={`${data?.product.photo.url}`}
             alt="product-image"
             className="max-w-[400px] h-[400px] my-5 object-contain"
           />

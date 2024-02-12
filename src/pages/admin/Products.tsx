@@ -43,7 +43,7 @@ function Products() {
         data?.products.map((item) => ({
           photo: (
             <img
-              src={`${server}/${item.photo}`}
+              src={`${item.photo.url}`}
               alt="product-image"
               className="w-[60px] h-[60px] object-contain mx-auto"
             />

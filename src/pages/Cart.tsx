@@ -10,8 +10,9 @@ import { CartItem } from "../types/types";
 import CartItemCard from "../components/CartItemCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { server } from "../redux/store";
+import { RootState, server } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Cart() {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ function Cart() {
     useSelector(
       (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
     );
+
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>();
@@ -50,6 +53,10 @@ function Cart() {
   };
 
   useEffect(() => {
+    if(!user){
+      toast.error("Please login first!");
+      return navigate("/login")
+    }
     if (couponCode) {
       const { token: cancelToken, cancel } = axios.CancelToken.source();
       const timeoutID = setTimeout(() => {
@@ -64,9 +71,10 @@ function Cart() {
           })
           .catch((e) => {
             setIsValidCouponCode(false);
+            console.log(isValidCouponCode);
+
             dispatch(applyDiscount(0));
             dispatch(calculatePrice());
-            console.log(e.error.data.message);
           });
       }, 1000);
 
@@ -76,7 +84,7 @@ function Cart() {
         cancel();
       };
     }
-  }, [couponCode]);
+  }, [couponCode,user]);
 
   return (
     <div className="lg:grid lg:grid-cols-4 px-2 xsm:px-8 py-4 mt-[90px]">
@@ -97,16 +105,25 @@ function Cart() {
       <section className="flex flex-col justify-start my-4 p-4">
         <h2 className="heading text-xl">Orders Info</h2>
         <div className="flex flex-col justify-between">
-          <p className="my-2">Subtotal: <span className=" float-right">{subtotal}</span></p>
-          <p className="my-2">Shipping Charges: <span className=" float-right">{shippingCharges}</span></p>
-          <p className="my-2">Tax: <span className=" float-right">{tax}</span></p>
+          <p className="my-2">
+            Subtotal: <span className=" float-right">{subtotal}</span>
+          </p>
+          <p className="my-2">
+            Shipping Charges:{" "}
+            <span className=" float-right">{shippingCharges}</span>
+          </p>
+          <p className="my-2">
+            Tax: <span className=" float-right">{tax}</span>
+          </p>
           <p className="my-2">
             Discount:{" "}
             <span className="text-red-500 float-right">
               {discount ? `-${discount}` : `0`}
             </span>
           </p>
-          <p className="font-bold my-2">Total: <span className=" float-right">{total}</span></p>
+          <p className="font-bold my-2">
+            Total: <span className=" float-right">{total}</span>
+          </p>
         </div>
         <div className="flex flex-col my-2">
           <input
@@ -119,7 +136,7 @@ function Cart() {
               setCouponCode(e.target.value);
             }}
           />
-          {isValidCouponCode && (
+          {couponCode && (
             <p
               className={`text-center mb-2 text-${
                 isValidCouponCode ? "green" : "red"

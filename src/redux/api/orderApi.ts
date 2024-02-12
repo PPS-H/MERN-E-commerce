@@ -3,8 +3,8 @@ import {
   AllOrdersResponse,
   MessageResponse,
   NewOrder,
-  UpdateOrder,
-  SingleOrderResponse
+  SingleOrderResponse,
+  UpdateOrder
 } from "../../types/ApiTypes";
 
 export const orderAPI = createApi({

@@ -29,7 +29,7 @@ function ProductCard({
         </div> */}
       <div className="space-y-2 flex flex-col justify-center items-center relative">
         <img
-          src={`${server}/${image}`}
+          src={`${image}`}
           alt="product-image"
           className="w-[200px] h-[200px] object-contain"
         />
