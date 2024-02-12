@@ -1,8 +1,7 @@
-import { Column } from "react-table";
-import Table from "../Common/Table";
 import { ReactElement, useEffect, useState } from "react";
-import { server } from "../../../redux/store";
+import { Column } from "react-table";
 import { latestTransactions } from "../../../types/ApiTypes";
+import Table from "../Common/Table";
 
 interface ColumnsType {
   name: string;
@@ -33,7 +32,7 @@ function DashboardTable({ data }: { data: latestTransactions[] }) {
           name: i.name,
           photo: (
             <img
-              src={`${server}/${i.photo}`}
+              src={`${i.photo}`}
               className="w-[50px] h-[50px]"
             ></img>
           ),

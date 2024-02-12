@@ -1,12 +1,12 @@
 import { ReactElement, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Column } from "react-table";
-import { RootState, server } from "../redux/store";
-import { useMyOrdersQuery } from "../redux/api/orderApi";
-import toast from "react-hot-toast";
-import { CustomError } from "../types/types";
-import Table from "../components/admin/Common/Table";
 import Loader from "../components/Loader";
+import Table from "../components/admin/Common/Table";
+import { useMyOrdersQuery } from "../redux/api/orderApi";
+import { RootState } from "../redux/store";
+import { CustomError } from "../types/types";
 
 interface ColumnsType {
   photo: ReactElement;
@@ -59,7 +59,7 @@ function MyOrders() {
         if (i.orderItems.length > 1) {
           i.orderItems.forEach((item) => {
             orders.push({
-              photo: <img src={`${server}/${item.photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
+              photo: <img src={`${item.photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
               amount: Math.round(item.price + item.price * 0.18),
               discount: i.discount,
               quantity: item.quantity,
@@ -80,7 +80,7 @@ function MyOrders() {
           });
         } else {
           orders.push({
-            photo: <img src={`${server}/${i.orderItems[0].photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
+            photo: <img src={`${i.orderItems[0].photo}`} className="w-[50px] h-[50px] object-contain mx-auto"></img>,
             amount: i.total,
             discount: i.discount,
             quantity: i.orderItems[0].quantity,

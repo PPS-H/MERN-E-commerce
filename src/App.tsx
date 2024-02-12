@@ -45,7 +45,7 @@ function App() {
   const dispatch = useDispatch();
   const { user, loading } = useSelector(
     (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  );  
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -60,7 +60,7 @@ function App() {
     });
   }, []);
   return loading ? (
-    <></>
+    <Loader/>
   ) : (
     <div
       className={`${

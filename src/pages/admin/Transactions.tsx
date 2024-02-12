@@ -57,7 +57,7 @@ function Transactions() {
               {item.status}
             </span>
           ),
-          action: <Link to={`/admin/transaction/${item._id}`}>Manage</Link>,
+          action: <Link to={`/admin/transaction/${item._id}`} className="bg-black text-white rounded py-1 px-2">Manage</Link>,
         }))
       );
     }
