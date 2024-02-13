@@ -1,6 +1,5 @@
-import { server } from "../redux/store";
-import { CartItem } from "../types/types";
 import { MdDelete } from "react-icons/md";
+import { CartItem } from "../types/types";
 
 
 type CartItemProps = {
@@ -22,7 +21,7 @@ function CartItemCard({
     <div className="flex items-center sm:text-lg justify-between text:xs xsm:text-md" key={key}>
       <div className="flex flex-col justify-center items-start">
         <img
-          src={`${server}/${product.photo}`}
+          src={`${product.photo}`}
           alt="product-image"
           className="w-[100px] h-[100px] object-contain mx-auto"
         />
@@ -30,9 +29,9 @@ function CartItemCard({
       </div>
       <div className="flex items-start">
         <p>
-          {product.price}*{product.quantity}=
+        &#8377;{product.price} * {product.quantity} = 
         </p>
-        <p>{product.price * product.quantity}</p>
+        <p>&#8377;{product.price * product.quantity}</p>
       </div>
 
       <div className="flex items-center">

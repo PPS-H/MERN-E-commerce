@@ -148,7 +148,7 @@ function ProductForm({
           name="price"
           isRequired={productId ? false : true}
           value={values.price}
-          labelText="Price"
+          labelText="Price (&#8377;)"
           classesForLabel="block my-2"
           classesForInput="rounded border border-solid px-3 py-2 w-full"
           placeholder="Enter price name"

@@ -32,7 +32,7 @@ function ProductManagement() {
           <div>
             <p className="heading">{data?.product.name}</p>
             <p className="font-bold text-2xl text-center">
-              ${data?.product.price}
+            &#8377;{data?.product.price}
             </p>
           </div>
         </div>

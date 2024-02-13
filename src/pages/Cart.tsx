@@ -105,23 +105,23 @@ function Cart() {
         <h2 className="heading text-xl">Orders Info</h2>
         <div className="flex flex-col justify-between">
           <p className="my-2">
-            Subtotal: <span className=" float-right">{subtotal}</span>
+            Subtotal: <span className=" float-right">&#8377;{subtotal}</span>
           </p>
           <p className="my-2">
             Shipping Charges:{" "}
-            <span className=" float-right">{shippingCharges}</span>
+            <span className=" float-right">&#8377;{shippingCharges}</span>
           </p>
           <p className="my-2">
-            Tax: <span className=" float-right">{tax}</span>
+            Tax: <span className=" float-right">&#8377;{tax}</span>
           </p>
           <p className="my-2">
             Discount:{" "}
             <span className="text-red-500 float-right">
-              {discount ? `-${discount}` : `0`}
+              {discount ? `-&#8377;${discount}` : `0`}
             </span>
           </p>
           <p className="font-bold my-2">
-            Total: <span className=" float-right">{total}</span>
+            Total: <span className=" float-right">&#8377;{total}</span>
           </p>
         </div>
         <div className="flex flex-col my-2">
