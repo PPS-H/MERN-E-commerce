@@ -5,12 +5,14 @@ import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
+  useChangeUserRoleMutation,
   useDeleteUserMutation,
   useGetAllUserQuery,
 } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import Loader from "../../components/Loader";
 import { responseToast } from "../../components/utils/features";
+import { GrUserAdmin } from "react-icons/gr";
 
 interface ColumnsType {
   avatar: ReactElement;
@@ -19,6 +21,7 @@ interface ColumnsType {
   gender: string;
   role: string;
   action: ReactElement;
+  changeRole: ReactElement;
 }
 
 const columns: Column<ColumnsType>[] = [
@@ -27,6 +30,7 @@ const columns: Column<ColumnsType>[] = [
   { Header: "Email", accessor: "email" },
   { Header: "Gender", accessor: "gender" },
   { Header: "Role", accessor: "role" },
+  { Header: "Change Role", accessor: "changeRole" },
   { Header: "Action", accessor: "action" },
 ];
 
@@ -37,9 +41,19 @@ function Customers() {
   if (isError) return toast.error("Unable to fetch user accounts");
 
   const [deleteUser] = useDeleteUserMutation();
+  const [changeUserRole] = useChangeUserRoleMutation();
   const handleDeleteUser = async (userId: string) => {
     try {
       const res = await deleteUser({ userId, adminId: user!._id });
+      responseToast(res, null, "");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangeRole = async (userId: string) => {
+    try {
+      const res = await changeUserRole({ userId, adminId: user!._id });
       responseToast(res, null, "");
     } catch (error) {
       console.log(error);
@@ -60,12 +74,23 @@ function Customers() {
                 }}
                 src={item.photo}
                 alt={item.name}
+                className="mx-auto"
               />
             ),
             name: item.name,
             email: item.email,
             gender: item.gender,
             role: item.role,
+            changeRole: (
+              <button
+                onClick={() => {
+                  handleChangeRole(item._id);
+                }}
+                className="text-xl"
+              >
+                <GrUserAdmin />
+              </button>
+            ),
             action: (
               <button
                 onClick={() => {

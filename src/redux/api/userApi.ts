@@ -13,7 +13,7 @@ export const userAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BACKEND_SERVER}/api/v1/user`,
   }), // Base url
-  tagTypes:["users"],
+  tagTypes: ["users"],
   endpoints: (builder) => ({
     //mutation is for data manipulation
     login: builder.mutation<MessageResponse, User>({
@@ -23,23 +23,36 @@ export const userAPI = createApi({
         method: "POST",
         body: user,
       }),
-      invalidatesTags:["users"]
+      invalidatesTags: ["users"],
     }), // Can add more endpoints also
     getAllUser: builder.query<AllUserResponse, string>({
       query: (id) => `all?id=${id}`,
-      providesTags:["users"]
+      providesTags: ["users"],
+    }),
+    changeUserRole: builder.mutation<MessageResponse, DeleteUser>({
+      query: ({ userId, adminId }) => ({
+        url: `${userId}?id=${adminId}`,
+        method: "PUT",
+        body: { userId },
+      }),
+      invalidatesTags: ["users"],
     }),
     deleteUser: builder.mutation<MessageResponse, DeleteUser>({
       query: ({ userId, adminId }) => ({
         url: `${userId}?id=${adminId}`,
         method: "DELETE",
       }),
-      invalidatesTags:["users"]
+      invalidatesTags: ["users"],
     }),
   }),
 });
 
-export const { useLoginMutation,useGetAllUserQuery,useDeleteUserMutation } = userAPI; // useLoginMutation automatically generated according to endpoint name
+export const {
+  useLoginMutation,
+  useGetAllUserQuery,
+  useDeleteUserMutation,
+  useChangeUserRoleMutation,
+} = userAPI; // useLoginMutation automatically generated according to endpoint name
 
 export const getUser = async (id: string) => {
   try {

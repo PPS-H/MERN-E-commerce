@@ -1,4 +1,3 @@
-import { server } from "../redux/store";
 import { OrderItem } from "../types/types";
 
 function OrderedProductCard({ photo, name, price, quantity }: OrderItem) {
@@ -6,7 +5,7 @@ function OrderedProductCard({ photo, name, price, quantity }: OrderItem) {
     <div className="flex justify-between items-center w-full">
       <div>
         <img
-          src={`${server}/${photo}`}
+          src={`${photo}`}
           alt="product-image"
           className="w-[50px] h-[50px] object-contain"
         />

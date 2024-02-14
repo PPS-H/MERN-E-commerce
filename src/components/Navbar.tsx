@@ -10,7 +10,6 @@ import { CartReducerInitialState } from "../types/ReducerTypes";
 import { User } from "../types/types";
 
 function Navbar({ user }: { user: User | null }) {
-
   const { cartItems } = useSelector(
     (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
   );
@@ -43,24 +42,33 @@ function Navbar({ user }: { user: User | null }) {
           className="mx-3 my-4 md:block hidden"
         />
         <ul className="flex items-center md:justify-end justify-evenly w-full">
-          <Li className="sm:p-2 m-2" text="Home" url="/" />
-          <Li className="sm:p-2 m-2" text="Products" url="/products" />
-          <Li className="sm:p-2 m-2" text="My orders" url="/myorders" />
+          <Li className="sm:p-2 xsm:m-2" text="Home" url="/" />
+          <Li className="sm:p-2 xsm:m-2" text="Products" url="/products" />
+          <Li className="sm:p-2 xsm:m-2" text="My orders" url="/myorders" />
+          {user && user.role == "admin" ? (
+            <Li
+              className="sm:p-2 xsm:m-2"
+              text="Dashboard"
+              url="/admin/dashboard"
+            />
+          ) : (
+            ""
+          )}
           <Li
-            className="p-2 m-2 text-2xl relative"
+            className="sm:p-2 xsm:m-2 text-2xl relative"
             text={<IoMdCart />}
             url="/cart"
             cartNumber={cartItems.length}
           />
           {user ? (
             <Li
-              className="p-2 m-2 text-2xl"
+              className="sm:p-2 xsm:m-2 text-2xl"
               text={<MdLogout />}
               url=""
               handleClick={logoutHandler}
             />
           ) : (
-            <Li className="p-2 m-2 text-2xl" text={<MdLogin />} url="/login" />
+            <Li className="sm:p-2 xsm:m-2 text-2xl" text={<MdLogin />} url="/login" />
           )}
         </ul>
       </div>

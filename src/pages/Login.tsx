@@ -44,8 +44,9 @@ function Login() {
           const message = (error.data as MessageResponse).message;
           toast.error(message);
         }
+      }else{
+        toast.success("Hi," + user.displayName);
       }
-      toast.success("Hi," + user.displayName);
     } catch (error) {
       toast.error("Sign in failed");
     }
