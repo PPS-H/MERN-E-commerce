@@ -13,7 +13,7 @@ function AdminPanel() {
   // const [phoneActive, setPhoneActive] = useState<boolean>(
   //   window.innerWidth < 1024
   // );
-  const phoneActive=window.innerWidth < 1024
+  const phoneActive = window.innerWidth < 1024;
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const handleClick = () => {
     setShowMenu(!showMenu);
@@ -26,12 +26,12 @@ function AdminPanel() {
     <>
       {phoneActive && (
         <div className="block h-[50px]">
-        <div className="block w-full bg-white p-2 fixed z-40">
-          <HiMenuAlt4
-            className="rounded-[100%] bg-white text-4xl"
-            onClick={handleClick}
-          />
-        </div>
+          <div className="block w-full bg-white p-2 fixed z-40">
+            <HiMenuAlt4
+              className="rounded-[100%] bg-white text-4xl"
+              onClick={handleClick}
+            />
+          </div>
         </div>
       )}
 
@@ -107,7 +107,12 @@ function AdminPanel() {
               </ul>
             </div>
           </div>
-          <Li url="/admin/coupons" text="Coupon" Icon={RiCouponLine} />
+          <Li
+            url="/admin/coupons"
+            text="Coupon"
+            Icon={RiCouponLine}
+            handleClick={checkMobileMenu}
+          />
         </div>
         {showMenu && (
           <button
